@@ -1,6 +1,5 @@
-#include "Network.h"
+#include "NetworkInclude.h"
 #include "NetworkObject.h"
-#include "Session.h"
 
 NetworkObject::NetworkObject()
 {
@@ -63,7 +62,7 @@ std::string NetworkObject::GetIP()
 	}
 }
 
-Session * NetworkObject::GetSesstion() {
+NetworkSession * NetworkObject::GetSesstion() {
     return m_pSession;
 }
 

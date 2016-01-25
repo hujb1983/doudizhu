@@ -11,7 +11,7 @@ base_INC = 	-I $(HOME)/Utility \
 			-I $(HOME)/Network \
 			-I $(MYSQLINC)
 	  
-UtilityObjs     = Utility/UtilityLogger.o \
+UtilityObjs =   Utility/UtilityLogger.o \
 				Utility/UtilityDrng.o \
 				Utility/UtilityIni.o \
 				Utility/UtilityMD5.o \
@@ -25,14 +25,23 @@ UtilityObjs     = Utility/UtilityLogger.o \
 				Utility/UtilityParserJson.o \
 				Utility/UtilityServerInfo.o 
   
-MydbcObjs       =  Mydbc/MydbcQueryExecuteProcessor.o \
+MydbcObjs   =   Mydbc/MydbcQueryExecuteProcessor.o \
 				Mydbc/MydbcQueryResult.o \
 				Mydbc/MydbcInterface.o \
 				Mydbc/MydbcMysql.o \
 				Mydbc/MydbcDatabase.o
 
-				  
-TextObject		= main.o		  
+NetworkObjs =   Network/NetworkSocketOption.o \
+				Network/NetworkObject.o \
+				Network/NetworkSession.o \
+				Network/NetworkSessionList.o \
+				Network/NetworkSessionPool.o \
+				Network/NetworkConnector.o \
+				Network/NetworkAcceptor.o \
+				Network/NetworkSyncHandler.o \
+				Network/NetworkIOCPServer.o
+				
+TextObject  =   testMakefile.o		  
 				  
 BINDIR = Bin
 INCDIR = Include
@@ -41,7 +50,7 @@ OBJDIR = Objects
 all: CheckDir \
 	$(BINDIR)/testMakefile
 
-$(BINDIR)/testMakefile: $(UtilityObjs) $(NetworkObjs) $(MydbcObjs) $(TextObject)
+$(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TextObject)
 	$(CC) -g $(MYSQLLIB) $^ -o $@ -pthread
 	-mv -f Mydbc/*.o $(OBJDIR)/
 	-mv -f Network/*.o $(OBJDIR)/

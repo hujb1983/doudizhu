@@ -1,19 +1,24 @@
 #ifndef _UtilityDoubleListT_H_
 #define _UtilityDoubleListT_H_
 #include "UtilitySingleListT.h"
+template <typename X, typename F> class Double_List_T;
 
-template <typename X, typename F> class UtilityDoubleListT;
 template <typename X>
 class LinkD_T
 {
-    template <typename , typename > friend class UtilityDoubleListT;
+
+    template <typename , typename > friend class Double_List_T;
+
     typedef  LinkS_T <X> LinkS;
-	
+
 public:
+
     LinkD_T () : next_ (0), prev_ (0) {}
+
     ~LinkD_T () {}
 
-    bool is_free () const {
+    bool is_free () const
+    {
         return (next_.is_free() && prev_.is_free());
     }
 
@@ -24,15 +29,20 @@ public:
     X * prev() const { return prev_.get ();}
 
 private:
-    void set_next (X * x) {
+    void set_next (X * x)
+    {
+         //assert (x != 0);
          next_.set (x);
     }
 
-    void set_prev (X * x) {
+    void set_prev (X * x)
+    {
+        //assert (x != 0);
         prev_.set (x);
     }
 
-    void set_free () {
+    void set_free ()
+    {
         next_.set_free ();
         prev_.set_free ();
     }
@@ -42,26 +52,36 @@ private:
 };
 
 
+// =================================================================
+// default convertor object reference X& to link reference LinkD_T<X> &
+// this implementation suitable for case
+// when X is derived from LinkD_T<X> (99% of using  intrusive lists).
+// If X has to be included in multiple intrusive lists simultaneosly,
+// it must contain mulitiple links and
+// inheritance should be replaced by aggregation
+// and the user defined functor must be applied.
+// ===================================================================
 template <typename X>
 class LinkD_Functor_T :  public std::unary_function < X, LinkD_T <X> >
 {
 public :
-    LinkD_T <X> *  operator ()( const X * x )  const {
+    LinkD_T <X> *  operator ()( const X * x )  const
+    {
         return  const_cast < X* > (x);
     }
 };
 
 template <typename X, typename F = LinkD_Functor_T <X> >
-class UtilityDoubleListT
+class Double_List_T
 {
 public:
-    typedef UtilityDoubleListT<X,F> List;
+    typedef Double_List_T<X,F> List;
     typedef LinkD_T<X>         LinkD;
     typedef LinkS_T<X>         LinkS;
 
     class iterator
     {
-        friend class UtilityDoubleListT<X,F>;
+        friend class Double_List_T<X,F>;
     public:
         ~iterator () {}
 
@@ -120,13 +140,13 @@ public:
         {}
 
         X *   x_;
-        UtilityDoubleListT<X, F>  * list_;
+        Double_List_T<X, F>  * list_;
     };
 
     friend class  iterator;
 
 
-    UtilityDoubleListT ()
+    Double_List_T ()
         : head_ (LinkS::end())
         , tail_ (LinkS::end())
         , size_ (0)
@@ -152,14 +172,14 @@ public:
 
     X * remove (iterator itr);
 
-    void swap   (UtilityDoubleListT<X, F>  & other);
-    void splice (UtilityDoubleListT<X, F>  & other );
+    void swap   (Double_List_T<X, F>  & other);
+    void splice (Double_List_T<X, F>  & other );
     void clear	();
 
 private:
     /// Protect from copy and assignment
-    UtilityDoubleListT  (const UtilityDoubleListT<X, F>  & other);
-    UtilityDoubleListT & operator= (const UtilityDoubleListT <X, F> & other);
+    Double_List_T  (const Double_List_T<X, F>  & other);
+    Double_List_T & operator= (const Double_List_T <X, F> & other);
 
 
     // functor that converts object pointer to link pointer
@@ -183,23 +203,23 @@ private:
 };
 
 //-----------------------------------------------------
-//   UtilityDoubleListT::iterator
+//   Double_List_T::iterator
 //-----------------------------------------------------
 template <class X, class F>
-inline typename UtilityDoubleListT<X,F>::iterator &
-UtilityDoubleListT<X,F>::iterator::operator ++()
+inline typename Double_List_T<X,F>::iterator &
+Double_List_T<X,F>::iterator::operator ++()
 {
     // behavior unpredictable if iterator not valid
-    if (!UtilityDoubleListT<X,F>::is_end(x_))
+    if (!Double_List_T<X,F>::is_end(x_))
     {
-        x_ = UtilityDoubleListT<X,F>::get_next (x_);
+        x_ = Double_List_T<X,F>::get_next (x_);
     }
     return *this;
 }
 
 template <class X, class F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::iterator::operator ++(int)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::iterator::operator ++(int)
 {
     // behavior unpredictable if iterator not valid
     iterator itr (*this);
@@ -208,24 +228,24 @@ UtilityDoubleListT<X,F>::iterator::operator ++(int)
 }
 
 template <class X, class F>
-inline typename UtilityDoubleListT<X,F>::iterator &
-UtilityDoubleListT<X,F>::iterator::operator --()
+inline typename Double_List_T<X,F>::iterator &
+Double_List_T<X,F>::iterator::operator --()
 {
     // behavior unpredictable if iterator not valid
-    if (UtilityDoubleListT<X,F>::is_end(x_))
+    if (Double_List_T<X,F>::is_end(x_))
     {
         x_ = list_->tail_.get();
     }
     else
     {
-        x_ = UtilityDoubleListT<X,F>::get_prev (x_);
+        x_ = Double_List_T<X,F>::get_prev (x_);
     }
     return *this;
 }
 
 template <class X, class F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::iterator::operator --(int)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::iterator::operator --(int)
 {
     // behavior unpredictable if iterator not valid
     iterator itr (*this);
@@ -233,11 +253,11 @@ UtilityDoubleListT<X,F>::iterator::operator --(int)
     return itr;
 }
 //-----------------------------------------------------
-//   UtilityDoubleListT
+//   Double_List_T
 //-----------------------------------------------------
 template <class X, class F>
-inline typename UtilityDoubleListT<X,F>::LinkD *
-UtilityDoubleListT<X,F>::get_link (const X * x)
+inline typename Double_List_T<X,F>::LinkD *
+Double_List_T<X,F>::get_link (const X * x)
 {
     assert (x != 0 && !is_end(x));
     static F funcObj2Link;
@@ -246,21 +266,21 @@ UtilityDoubleListT<X,F>::get_link (const X * x)
 
 template <class X, class F>
 inline X *
-UtilityDoubleListT<X,F>::get_next (const X * x)
+Double_List_T<X,F>::get_next (const X * x)
 {
     return get_link (x)->next ();
 }
 
 template <class X, class F>
 inline X *
-UtilityDoubleListT<X,F>::get_prev (const X * x)
+Double_List_T<X,F>::get_prev (const X * x)
 {
     return get_link (x)->prev ();
 }
 
 template <typename X, typename F>
 inline X *
-UtilityDoubleListT<X,F>::remove_impl (X * x)
+Double_List_T<X,F>::remove_impl (X * x)
 {
     if (x == 0 || this->is_end(x))
         return 0;
@@ -289,8 +309,8 @@ UtilityDoubleListT<X,F>::remove_impl (X * x)
 
 
 template <typename X, typename F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::insert_impl (X * x, X * x2)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::insert_impl (X * x, X * x2)
 {
     // insert node x before node x2
     //assert (x != 0 && x2 != 0);
@@ -324,7 +344,7 @@ UtilityDoubleListT<X,F>::insert_impl (X * x, X * x2)
 
 template <class X, class F>
 inline X *
-UtilityDoubleListT<X,F>::front ()
+Double_List_T<X,F>::front ()
 {
     if (size_ == 0)
     {
@@ -335,7 +355,7 @@ UtilityDoubleListT<X,F>::front ()
 
 template <class X, class F>
 inline X *
-UtilityDoubleListT<X,F>::back ()
+Double_List_T<X,F>::back ()
 {
     if (size_ == 0)
     {
@@ -345,24 +365,24 @@ UtilityDoubleListT<X,F>::back ()
 }
 
 template <typename X, typename F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::push_front (X * x)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::push_front (X * x)
 {
     //assert (x != 0);
     return insert_impl (x, head_.get());
 }
 
 template <typename X, typename F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::push_back (X * x)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::push_back (X * x)
 {
     //assert (x != 0);
     return insert_impl (x, LinkS::end());
 }
 
 template <typename X, typename F>
-inline typename UtilityDoubleListT<X,F>::iterator
-UtilityDoubleListT<X,F>::insert (X *x, iterator where)
+inline typename Double_List_T<X,F>::iterator
+Double_List_T<X,F>::insert (X *x, iterator where)
 {
     //assert (x != 0);
 
@@ -374,21 +394,21 @@ UtilityDoubleListT<X,F>::insert (X *x, iterator where)
 
 template <typename X, typename F>
 inline X *
-UtilityDoubleListT<X,F>::pop_front ()
+Double_List_T<X,F>::pop_front ()
 {
     return remove_impl (head_.get());
 }
 
 template <typename X, typename F>
 inline X *
-UtilityDoubleListT<X,F>::pop_back ()
+Double_List_T<X,F>::pop_back ()
 {
     return remove_impl (tail_.get());
 }
 
 template <typename X, typename F>
 inline X *
-UtilityDoubleListT<X,F>::remove (iterator itr)
+Double_List_T<X,F>::remove (iterator itr)
 {
     if (itr.list_ != this)
         return 0;
@@ -397,7 +417,7 @@ UtilityDoubleListT<X,F>::remove (iterator itr)
 
 template <class X, class F>
 inline void
-UtilityDoubleListT<X,F>::swap (UtilityDoubleListT<X,F>  & other)
+Double_List_T<X,F>::swap (Double_List_T<X,F>  & other)
 {
     if (&other == this)
         return;
@@ -409,7 +429,7 @@ UtilityDoubleListT<X,F>::swap (UtilityDoubleListT<X,F>  & other)
 
 template <class X, class F>
 inline void
-UtilityDoubleListT<X,F>::splice (UtilityDoubleListT<X,F>  & other)
+Double_List_T<X,F>::splice (Double_List_T<X,F>  & other)
 {
     if (&other == this)
         return;
@@ -438,15 +458,11 @@ UtilityDoubleListT<X,F>::splice (UtilityDoubleListT<X,F>  & other)
 
 template <class X, class F>
 inline void
-UtilityDoubleListT<X,F>::clear ()
+Double_List_T<X,F>::clear ()
 {
     head_.set_end();
     tail_.set_end();
     size_ = 0;
 }
 
-#endif /* TERABIT_UtilityDoubleListT_H */
-
-
-
-
+#endif /* TERABIT_DOUBLE_LIST_T_H */

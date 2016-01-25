@@ -175,19 +175,19 @@ public:
 				if( nBackSpaceCount >= nSize )  
 				{
 					// 
-					Yond_Memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nSize );
+					memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nSize );
 				}
 				else
 				{
 					// 
-					Yond_Memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nBackSpaceCount );
-					Yond_Memcpy( m_pData, pSrc + nBackSpaceCount, sizeof(T) * ( nSize - nBackSpaceCount ) );
+					memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nBackSpaceCount );
+					memcpy( m_pData, pSrc + nBackSpaceCount, sizeof(T) * ( nSize - nBackSpaceCount ) );
 				}
 			}
 			else
 			{
 				// 2. head tail
-				Yond_Memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nSize );
+				memcpy( m_pData + m_nTail, pSrc, sizeof(T) * nSize );
 			}
 		}
 
@@ -251,7 +251,7 @@ public:
 			if( m_nHead < m_nTail )
 			{
 				// 1. head tail
-				Yond_Memcpy( pTar, m_pData + m_nHead, sizeof(T) * nSize );
+				memcpy( pTar, m_pData + m_nHead, sizeof(T) * nSize );
 			}
 			else
 			{
@@ -259,13 +259,13 @@ public:
 				if( GetBackDataCount() >= nSize )
 				{
 					// 
-					Yond_Memcpy( pTar, m_pData + m_nHead, sizeof(T) * nSize );                           
+					memcpy( pTar, m_pData + m_nHead, sizeof(T) * nSize );                           
 				}
 				else
 				{
 					// 
-					Yond_Memcpy( pTar, m_pData + m_nHead, sizeof(T) * GetBackDataCount() );
-					Yond_Memcpy( pTar + GetBackDataCount(), m_pData, sizeof(T) * ( nSize - GetBackDataCount() ) );
+					memcpy( pTar, m_pData + m_nHead, sizeof(T) * GetBackDataCount() );
+					memcpy( pTar + GetBackDataCount(), m_pData, sizeof(T) * ( nSize - GetBackDataCount() ) );
 				}
 			}
 		}
@@ -288,7 +288,7 @@ public:
 		m_cs.Lock();
 
 		// 
-		Yond_Memcpy( m_pData + m_nSize, m_pData, nSize );
+		memcpy( m_pData + m_nSize, m_pData, nSize );
 
 		m_cs.Unlock();
 	}

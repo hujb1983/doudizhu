@@ -9,7 +9,7 @@
 #include "UtilityDoubleListT.h"
 #include "UtilityLinkedList.h"
 #include "UtilityFunctionMap.h"
-
+#include "UtilityCircuitQueue.h"
 #include "UtilityMutex.h"
 #include "UtilityThread.h"
 #include "UtilityThreadPool.h"

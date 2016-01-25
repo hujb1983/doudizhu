@@ -88,7 +88,12 @@ typedef long long		    LLONG;
 #define MAX(a,b) (((a)>=(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
-#define SAFE_DELETE(a) if(a!=NULL){ delete a; }
-#define SAFE_DELETE_ARRAY(a) if(a!=NULL){ delete[] a; }
+#define TRUE	1
+#define FALSE	0
+
+#define INVALID_SOCKET	-1
+#define	SOCKET_ERROR	-1
+
+#define SAFE_DELETE( p) { if ( p) { delete ( p); ( p) = NULL; } }
 
 #endif // _UTILITYCOMMON_H_

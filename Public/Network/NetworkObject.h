@@ -1,18 +1,12 @@
-#ifndef _NETWORKOBJECT_H_
-#define _NETWORKOBJECT_H_
+#ifndef _NetworkObject_H_
+#define _NetworkObject_H_
+#include <NetworkDefine.h>
+class NetworkSession;
 
-#include <Utility.h>
-#include <Network.h>
-
-//-------------------------------------------------------------------------------------------------
-/// NetworkObject
-//	- fnCreateAcceptedObject
-//	- (OnAccept, OnDisconnect, OnRecv, OnConnect)
-//-------------------------------------------------------------------------------------------------
 class NetworkObject
 {
-	friend class Session;
-	friend class SyncHandler;
+	friend class NetworkSession;
+	friend class NetworkSyncHandler;
 
 public:
 	NetworkObject();
@@ -28,7 +22,7 @@ public:
 
 	//WORD 			GetPort();	// PORT
 	std::string		GetIP();
-	Session *  	    GetSesstion();
+	NetworkSession *GetSesstion();
 
 	void            NotSendHeader() { m_bSendHander = FALSE; }   // default TRUE;
 	BOOL 			hasSendHeader() { return m_bSendHander; }
@@ -44,9 +38,9 @@ protected:
 	virtual void	OnConnect( BOOL bSuccess, DWORD dwNetworkIndex ) {}
 	virtual void	OnLogString( char *pszLog ) {}
 
-	inline void		SetSession( Session *pSession ) { m_pSession = pSession; }
+	inline void		SetSession( NetworkSession *pSession ) { m_pSession = pSession; }
 
-	Session			*m_pSession;
+	NetworkSession *m_pSession;
 
 	BOOL			m_bSendHander;
 	BOOL			m_bRecvHander;

@@ -1,21 +1,5 @@
-/*********************************************************************
-** Copyright (C) 2003 Terabit Pty Ltd.  All rights reserved.
-**
-** This file is part of the POSIX-Proactor module.
-**
-**  
-**   
-**
-**
-**
-** @author Alexander Libman <libman@terabit.com.au>
-**
-**********************************************************************/
-
 #ifndef _UtilitySingleListT_H_
 #define _UtilitySingleListT_H_
-
-# pragma once
 
 #include <functional>
 #include <algorithm>
@@ -23,7 +7,7 @@
 template <typename X> class LinkS_T;
 template <typename X> class LinkD_T;
 
-template <typename X, typename F> class UtilitySingleListT;
+template <typename X, typename F> class Single_List_T;
 template <typename X, typename F> class Single_Queue_T;
 template <typename X, typename F> class Double_List_T;
 
@@ -37,7 +21,7 @@ class LinkS_T
 private:
  
     template <typename > friend class LinkD_T;
-    template <typename , typename > friend class UtilitySingleListT;
+    template <typename , typename > friend class Single_List_T;
     template <typename , typename > friend class Single_Queue_T;
     template <typename , typename > friend class Double_List_T;
 
@@ -99,15 +83,15 @@ public :
 //============================================================
 
 template < class X, class F = LinkS_Functor_T <X> >
-class UtilitySingleListT 
+class Single_List_T 
 {
 public: 
-    typedef UtilitySingleListT<X,F> List;
+    typedef Single_List_T<X,F> List;
     typedef LinkS_T<X>         Link;
 
     class iterator 
     {
-        friend class  UtilitySingleListT<X,F>;
+        friend class  Single_List_T<X,F>;
 
         iterator(X * x) : x_ (x)  {;}
         iterator(const Link & link) : x_ (link.get())  {;}
@@ -150,7 +134,7 @@ public:
         X *    x_;
     };
 
-    UtilitySingleListT () : head_ (Link::end())
+    Single_List_T () : head_ (Link::end())
     {}
 
     bool empty () const  { return head_.is_end(); }
@@ -172,7 +156,7 @@ public:
     iterator begin() const { return iterator (head_);}
     iterator end ()  const { return iterator (Link::end());}
 
-    void swap   (UtilitySingleListT<X, F>  & other);
+    void swap   (Single_List_T<X, F>  & other);
 
     template < class Other_List_T >
     void splice (Other_List_T  & other);
@@ -181,8 +165,8 @@ private:
     friend class iterator;
             
     /// Protect from copy and assignment
-    UtilitySingleListT  (const UtilitySingleListT<X, F>  & other);
-    UtilitySingleListT & operator= (const UtilitySingleListT <X, F> & other);
+    Single_List_T  (const Single_List_T<X, F>  & other);
+    Single_List_T & operator= (const Single_List_T <X, F> & other);
 
     // functor that converts object pointer to link pointer
     // does it make sense to have non-static converter ??
@@ -195,20 +179,20 @@ private:
 };
 
 //-----------------------------------------------------
-//   UtilitySingleListT::iterator
+//   Single_List_T::iterator
 //-----------------------------------------------------
 template <class X, class F>
-inline typename UtilitySingleListT<X,F>::iterator &
-UtilitySingleListT<X,F>::iterator::operator ++()
+inline typename Single_List_T<X,F>::iterator &
+Single_List_T<X,F>::iterator::operator ++()
 {
     // behavior unpredictable if iterator not valid
-    this->x_ =  UtilitySingleListT<X,F>::get_next (this->x_);
+    this->x_ =  Single_List_T<X,F>::get_next (this->x_);
     return *this;
 }
    
 template <class X, class F>
-inline typename UtilitySingleListT<X,F>::iterator 
-UtilitySingleListT<X,F>::iterator::operator ++(int)
+inline typename Single_List_T<X,F>::iterator 
+Single_List_T<X,F>::iterator::operator ++(int)
 {
     // behavior unpredictable if iterator not valid
     iterator itr (*this);
@@ -217,12 +201,12 @@ UtilitySingleListT<X,F>::iterator::operator ++(int)
 }
  
 //-----------------------------------------------------
-//    UtilitySingleListT
+//    Single_List_T
 //-----------------------------------------------------
 
 template <class X, class F>
-inline typename UtilitySingleListT<X,F>::Link * 
-UtilitySingleListT<X,F>::get_link (const X * x)
+inline typename Single_List_T<X,F>::Link * 
+Single_List_T<X,F>::get_link (const X * x)
 {
     assert (x != 0 &&  x != Link::end() );
     static F funcObj2Link;
@@ -231,7 +215,7 @@ UtilitySingleListT<X,F>::get_link (const X * x)
 
 template <class X, class F>
 inline X * 
-UtilitySingleListT<X,F>::get_next (const X * x)
+Single_List_T<X,F>::get_next (const X * x)
 {
     return get_link (x)->get ();
 }
@@ -239,7 +223,7 @@ UtilitySingleListT<X,F>::get_next (const X * x)
 
 template <class X, class F>
 inline void
-UtilitySingleListT<X,F>::push_front (X * x)
+Single_List_T<X,F>::push_front (X * x)
 {
     //assert (x != 0 && x != Link::end() && head_.get() != 0);
 
@@ -252,7 +236,7 @@ UtilitySingleListT<X,F>::push_front (X * x)
 
 template <class X, class F>
 inline void
-UtilitySingleListT<X,F>::push_back (X * x) 
+Single_List_T<X,F>::push_back (X * x) 
 {
     //assert (x != 0 && x != Link::end() && head_.get() != 0);
 
@@ -272,7 +256,7 @@ UtilitySingleListT<X,F>::push_back (X * x)
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::front ()
+Single_List_T<X,F>::front ()
 {
     X * x = head_.get();
 
@@ -285,7 +269,7 @@ UtilitySingleListT<X,F>::front ()
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::back ()
+Single_List_T<X,F>::back ()
 {
     X * x = 0;
     
@@ -301,7 +285,7 @@ UtilitySingleListT<X,F>::back ()
 
 template <class X, class F>
 inline size_t
-UtilitySingleListT<X,F>::size () const
+Single_List_T<X,F>::size () const
 {
     size_t count =0;
     iterator it1 = begin();
@@ -316,7 +300,7 @@ UtilitySingleListT<X,F>::size () const
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::pop_front ()
+Single_List_T<X,F>::pop_front ()
 {
     X * x = head_.get();
 
@@ -337,7 +321,7 @@ UtilitySingleListT<X,F>::pop_front ()
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::pop_back ()
+Single_List_T<X,F>::pop_back ()
 {
     X * x = 0;
     Link * prevLink = &head_;
@@ -365,7 +349,7 @@ UtilitySingleListT<X,F>::pop_back ()
 
 template <class X, class F>
 inline void
-UtilitySingleListT<X,F>::swap (UtilitySingleListT<X,F>  & other)
+Single_List_T<X,F>::swap (Single_List_T<X,F>  & other)
 {
     if (&other == this)
         return;
@@ -375,7 +359,7 @@ UtilitySingleListT<X,F>::swap (UtilitySingleListT<X,F>  & other)
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::find (X *x)
+Single_List_T<X,F>::find (X *x)
 {
   if (x == 0)
     return 0;
@@ -394,7 +378,7 @@ UtilitySingleListT<X,F>::find (X *x)
 
 template <class X, class F>
 inline X *
-UtilitySingleListT<X,F>::remove (X *x)
+Single_List_T<X,F>::remove (X *x)
 {
   if (x == 0)
     return 0;
@@ -423,7 +407,7 @@ UtilitySingleListT<X,F>::remove (X *x)
 template < class X, class F >
 template < class Other_List_T >
 inline void
-UtilitySingleListT<X,F>::splice (Other_List_T & other)
+Single_List_T<X,F>::splice (Other_List_T & other)
 {
     X * x = other.front ();
     if (x == 0)
@@ -815,4 +799,4 @@ Single_Queue_T<X,F>::splice (Other_List_T  & other)
 //    other.size_ = 0;
 }
 
-#endif /* TERABIT_UtilitySingleListT_H */
+#endif /* TERABIT_SINGLE_LIST_T_H */
