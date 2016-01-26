@@ -1,5 +1,5 @@
-﻿#ifndef _SysLog_INCLUDED_
-#define _SysLog_INCLUDED_
+﻿#ifndef _UtilityLogger_H_
+#define _UtilityLogger_H_
 
 
 // the log print to what place;

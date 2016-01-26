@@ -89,7 +89,7 @@ NetworkSyncHandler::NetworkSyncHandler()
 	m_numActiveSessions = 0;
 	m_dwMaxAcceptSession = 0;
 
-	m_pIOCPServer 			= NULL;
+	m_pServer 			= NULL;
 
 	m_pAcceptSessionPool	= NULL;
 	m_pConnectSessionPool	= NULL;
@@ -127,9 +127,9 @@ NetworkSyncHandler::~NetworkSyncHandler()
 	if (m_pTemplateList) 		delete m_pTemplateList;
 }
 
-BOOL NetworkSyncHandler::Init( NetworkIOCPServer *pIOCPServer, LPSYNCHANDLER_DESC lpDesc )
+BOOL NetworkSyncHandler::Init( NetworkServer *pServer, LPSYNCHANDLER_DESC lpDesc )
 {
-	m_pIOCPServer	= pIOCPServer;
+	m_pServer	= pServer;
 
 	//assert( !IsBadReadPtr( lpDesc->fnCreateAcceptedObject, sizeof(lpDesc->fnCreateAcceptedObject) ) );
 	//assert( !IsBadReadPtr( lpDesc->fnDestroyAcceptedObject, sizeof(lpDesc->fnDestroyAcceptedObject) ) );

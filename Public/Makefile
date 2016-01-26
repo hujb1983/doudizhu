@@ -9,6 +9,7 @@ MYSQLLIB = -L /usr/lib64/mysql -l mysqlclient -lz -lm
 base_INC = 	-I $(HOME)/Utility \
 			-I $(HOME)/Mydbc \
 			-I $(HOME)/Network \
+			-I $(HOME)/Common \
 			-I $(MYSQLINC)
 	  
 UtilityObjs =   Utility/UtilityLogger.o \
@@ -39,7 +40,19 @@ NetworkObjs =   Network/NetworkSocketOption.o \
 				Network/NetworkConnector.o \
 				Network/NetworkAcceptor.o \
 				Network/NetworkSyncHandler.o \
-				Network/NetworkIOCPServer.o
+				Network/NetworkServer.o
+				
+TemplateObjs  =	Template/TemplateServerSession.o \
+				Template/TemplateTempSession.o \
+				Template/TemplateLoginSession.o \
+				Template/TemplateAgentSession.o \
+				Template/TemplateLobbySession.o \
+				Template/TemplateGameSession.o \
+				Template/TemplateDBSession.o \
+				Template/TemplateUserSession.o \
+				Template/TemplatePacketHandler.o \
+				Template/TemplateSessionFactory.o \
+				Template/TemplateMainServer.o
 				
 TextObject  =   testMakefile.o		  
 				  
@@ -50,14 +63,16 @@ OBJDIR = Objects
 all: CheckDir \
 	$(BINDIR)/testMakefile
 
-$(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TextObject)
+$(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TemplateObjs) $(TextObject)
 	$(CC) -g $(MYSQLLIB) $^ -o $@ -pthread
 	-mv -f Mydbc/*.o $(OBJDIR)/
 	-mv -f Network/*.o $(OBJDIR)/
 	-mv -f Utility/*.o $(OBJDIR)/
+	-mv -f Template/*.o $(OBJDIR)/
 	-cp -f Mydbc/*.h $(INCDIR)/
 	-cp -f Network/*.h $(INCDIR)/
 	-cp -f Utility/*.h $(INCDIR)/
+	-cp -f Common/*.h $(INCDIR)/
 	
 .SUFFIXES: .c .o .cpp
 .cpp.o:
@@ -74,6 +89,7 @@ clean:
 	rm -f Mydbc/*.o
 	rm -f Network/*.o
 	rm -f Utility/*.o
+	rm -f Template/*.o
 	rm -f $(BINDIR)/*
 	rm -f $(INCDIR)/*
 	rm -f $(OBJDIR)/*

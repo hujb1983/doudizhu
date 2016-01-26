@@ -2,6 +2,7 @@
 #define _UtilityInclude_H_
 
 #include "UtilityDefine.h"
+#include "UtilityLogger.h"
 #include "UtilitySingleton.h"
 #include "UtilityMemoryFactory.h"
 #include "UtilitySolarHashTable.h"

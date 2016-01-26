@@ -13,6 +13,6 @@
 #include "NetworkAcceptor.h"
 #include "NetworkConnector.h"
 #include "NetworkSyncHandler.h"
-#include "NetworkIOCPServer.h"
+#include "NetworkServer.h"
 
 #endif

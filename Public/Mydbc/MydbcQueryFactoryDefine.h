@@ -30,7 +30,6 @@
 #define QUERYFREE( classType, classObj )			QueryPoolFactory::Instance()->Free##classType##( classObj )
 
 
-
 template<class Type>
 class QUERY_POOL
 {
@@ -53,7 +52,7 @@ public:
 		m_pool.Free( pType );
 	}
 private:
-	A::MemoryFactory<Type> m_pool;
+	UtilityMemoryFactory<Type> m_pool;
 };
 
 #define _DECLARE_QUERY_POOL( CLASSNAME )			\

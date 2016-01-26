@@ -17,7 +17,7 @@ public:
 	NetworkSyncHandler();
 	~NetworkSyncHandler();
 	
-	BOOL 		Init( NetworkIOCPServer *pIOCPServer, LPSYNCHANDLER_DESC lpDesc );
+	BOOL 		Init( NetworkServer *pServer, LPSYNCHANDLER_DESC lpDesc );
 	BOOL 		StartListen(const char *IP, WORD wPort);
 	void 		Update();
 	void        Shutdown();
@@ -58,7 +58,7 @@ private:
 	NetworkAcceptor  * m_pAcceptor;
 	NetworkConnector * m_pConnector;
 	
-	NetworkIOCPServer * m_pIOCPServer;
+	NetworkServer 	   * m_pServer;
 	NetworkSessionList * m_pActiveSessionList;
 	NetworkSessionList * m_pAcceptedSessionList;
 	NetworkSessionList * m_pConnectSuccessList;

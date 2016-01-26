@@ -8,7 +8,7 @@ class NetworkSessionList;
 class NetworkSessionPool;
 class NetworkObject;
 class NetworkSyncHandler;
-class NetworkIOCPServer;
+class NetworkServer;
 
 #include <stdio.h>
 #include <stdlib.h>
