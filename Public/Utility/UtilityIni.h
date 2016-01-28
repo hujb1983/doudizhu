@@ -9,6 +9,7 @@ class UtilityIni
 public:
 	UtilityIni(const char* pIniFile);
 	~UtilityIni(); 
+	
 	void Update();
 
 	const char* 	GetString(const char* sect, const char* key, const char* defaultValue = "");

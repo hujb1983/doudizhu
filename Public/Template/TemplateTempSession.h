@@ -14,6 +14,9 @@ public:
 	virtual void	OnConnect( BOOL bSuccess, DWORD dwNetworkIndex );
 	virtual void    OnDisconnect();
 	virtual void	OnLogString( char * pszLog);
+
+private:
+	BYTE m_bFirst;
 };
 
 #endif // _AGENTPLAYER_H_INCLUDED_

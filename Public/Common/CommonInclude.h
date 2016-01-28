@@ -3,5 +3,6 @@
 
 #include "CommonDefine.h"
 #include "CommonStruct.h"
+#include "CommonStructConnect.h"
 
 #endif

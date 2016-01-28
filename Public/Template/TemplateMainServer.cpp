@@ -1,6 +1,9 @@
 #include "TemplateInclude.h"
 #include "TemplateMainServer.h"
 
+TemplateServerSession * TemplateMainServer::m_pSessionArray[MAX_PORT+1];
+UtilityKeyGenerator TemplateMainServer::m_cObjectKeys;
+
 TemplateMainServer::TemplateMainServer(void)
 {
 	m_bShutdown		= FALSE;
@@ -9,12 +12,10 @@ TemplateMainServer::TemplateMainServer(void)
 
 TemplateMainServer::~TemplateMainServer(void)
 {
-
 }
 
 BOOL TemplateMainServer::Init()
 {
-	
 }
 
 BOOL TemplateMainServer::StartServerSideListen(WORD wPort)
@@ -52,7 +53,13 @@ BOOL TemplateMainServer::ConnectToServer( TemplateServerSession * pSession, char
 
 BOOL TemplateMainServer::MaintainConnection()
 {
-	
+	if (m_bShutdown) {
+		return TRUE;
+	}
+
+	/* if (m_pLobbyServer->TryToConnect()) {
+		ConnectToServer( m_pLobbyServer, (char *)m_pLobbyServer->GetConnnectIP().c_str(), m_pLobbyServer->GetConnnectPort() );
+	} */
 }
 
 BOOL TemplateMainServer::Update( DWORD dwDeltaTick )
@@ -64,6 +71,45 @@ BOOL TemplateMainServer::Update( DWORD dwDeltaTick )
 	MaintainConnection();
 }
 
+BOOL TemplateMainServer::SendTo( WORD wKey, BYTE * pMsg, WORD wSize)
+{
+	TemplateServerSession * pSession = TemplateMainServer::m_pSessionArray[wKey];
+	if (pSession!=NULL) {
+		pSession->Send(pMsg, wSize);
+	}
+	return TRUE;
+}
+
+/**************************************************************
+	服务器共享连接信息
+**************************************************************/
+void TemplateMainServer::InitSessionArray() {
+	TemplateMainServer::m_cObjectKeys.Create(1,MAX_PORT);
+}
+void TemplateMainServer::CloseSessionArray(){
+
+}
+DWORD TemplateMainServer::AllocSessionKey() {
+	TemplateMainServer::m_cObjectKeys.GetKey();
+}
+void TemplateMainServer::FreeSessionKey(DWORD wIndex) {
+	TemplateMainServer::m_cObjectKeys.RestoreKey( wIndex );
+}
+DWORD TemplateMainServer::SetSession(TemplateServerSession * pSession) {
+	WORD wKey = pSession->GetSessionIndex();
+	if ( TemplateMainServer::m_pSessionArray[wKey]!=NULL ) {
+		TemplateMainServer::FreeSession(wKey); //先释放
+	}
+	TemplateMainServer::m_pSessionArray[wKey] = pSession;
+}
+void TemplateMainServer::FreeSession(DWORD wIndex) {
+	if (wIndex<MAX_PORT) {
+		WORD wKey = (WORD)wIndex;
+		TemplateMainServer::m_pSessionArray[wKey] = NULL;
+		TemplateMainServer::FreeSessionKey(wKey);
+	}
+}
+	
 /**************************************************************
 	创建服务器信息
 **************************************************************/

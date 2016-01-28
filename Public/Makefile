@@ -52,6 +52,7 @@ TemplateObjs  =	Template/TemplateServerSession.o \
 				Template/TemplateUserSession.o \
 				Template/TemplatePacketHandler.o \
 				Template/TemplateSessionFactory.o \
+				Template/TemplateServerConfig.o \
 				Template/TemplateMainServer.o
 				
 TextObject  =   testMakefile.o		  
