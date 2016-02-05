@@ -2,7 +2,7 @@
 #define _TemplateMainServer_H_
 #include <CommonInclude.h>
 #include <NetworkInclude.h>
-#include <NetworkInclude.h>
+#include "TemplateServerConfig.h"
 #include "TemplateSessionFactory.h"
 
 NetworkObject * CreateServerSideAcceptedObject();
@@ -13,14 +13,13 @@ NetworkObject * CreateClientSideAcceptedObject();
 VOID DestroyClientSideAcceptedObject( NetworkObject * pNetworkObject );
 VOID DestroyClientSideConnectedObject( NetworkObject * pNetworkObject );
 
+enum { CLIENT_SYNCHANDLER = 0, SERVER_SYNCHANDLER = 1, };
 
 /**************************************************************
 	服务器框架模板
 **************************************************************/
-class TemplateMainServer
+class TemplateMainServer : public TemplateServerConfig
 {
-	enum { CLIENT_SYNCHANDLER = 0, SERVER_SYNCHANDLER = 1, };
-
 public:
 	TemplateMainServer(void);
 	~TemplateMainServer(void);
@@ -39,7 +38,7 @@ public:
 private:
 	BYTE m_bShutdown;
 	NetworkServer * m_pServer;
-	
+
 public:
 	static void InitSessionArray();
 	static void CloseSessionArray();

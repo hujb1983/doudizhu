@@ -54,8 +54,6 @@ TemplateObjs  =	Template/TemplateServerSession.o \
 				Template/TemplateSessionFactory.o \
 				Template/TemplateServerConfig.o \
 				Template/TemplateMainServer.o
-				
-TextObject  =   testMakefile.o		  
 				  
 BINDIR = Bin
 INCDIR = Include
@@ -64,8 +62,7 @@ OBJDIR = Objects
 all: CheckDir \
 	$(BINDIR)/testMakefile
 
-$(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TemplateObjs) $(TextObject)
-	$(CC) -g $(MYSQLLIB) $^ -o $@ -pthread
+$(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TemplateObjs)
 	-mv -f Mydbc/*.o $(OBJDIR)/
 	-mv -f Network/*.o $(OBJDIR)/
 	-mv -f Utility/*.o $(OBJDIR)/
@@ -74,6 +71,7 @@ $(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TemplateObj
 	-cp -f Network/*.h $(INCDIR)/
 	-cp -f Utility/*.h $(INCDIR)/
 	-cp -f Common/*.h $(INCDIR)/
+	-cp -f Template/*.h $(INCDIR)/
 	
 .SUFFIXES: .c .o .cpp
 .cpp.o:

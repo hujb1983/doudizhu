@@ -12,6 +12,8 @@ public:
 	~TemplatePacketHandler(void);
 
 public:
+    static BOOL Init();
+    static BOOL Release();
 
 	virtual BOOL Register_Client();
 	virtual BOOL Register_Login ();
@@ -27,13 +29,13 @@ public:
 	BOOL AddHandler_Games  ( WORD category, WORD protocol, fnHandler fnHandler);
 	BOOL AddHandler_DB     ( WORD category, WORD protocol, fnHandler fnHandler);
 
-	void ParsePacket_Client( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-    void ParsePacket_Login ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-    void ParsePacket_Agent ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-	void ParsePacket_Lobby ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-    void ParsePacket_Games ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-    void ParsePacket_DB    ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
-	
+	static void ParsePacket_Client( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+    static void ParsePacket_Login ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+    static void ParsePacket_Agent ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+	static void ParsePacket_Lobby ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+    static void ParsePacket_Games ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+    static void ParsePacket_DB    ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
+
 private:
 	struct FUNC_Client   : public BASE_FUNC {
 		fnHandler	m_fnHandler;
@@ -42,15 +44,15 @@ private:
 	struct FUNC_Login   : public BASE_FUNC {
 		fnHandler	m_fnHandler;
 	};
-	
+
 	struct FUNC_Agent   : public BASE_FUNC {
 		fnHandler	m_fnHandler;
 	};
-	
+
 	struct FUNC_Lobby   : public BASE_FUNC {
 		fnHandler	m_fnHandler;
 	};
-	
+
 	struct FUNC_Games : public BASE_FUNC {
 		fnHandler	m_fnHandler;
 	};
@@ -59,12 +61,12 @@ private:
 		fnHandler	m_fnHandler;
 	};
 
-	UtilityFunctionMap	*	m_pFuncMap_Client;
-	UtilityFunctionMap	*	m_pFuncMap_Login;
-	UtilityFunctionMap	*	m_pFuncMap_Agent;
-	UtilityFunctionMap	*	m_pFuncMap_Lobby;
-	UtilityFunctionMap	*	m_pFuncMap_Games;
-	UtilityFunctionMap	*	m_pFuncMap_DB;
+	static UtilityFunctionMap * m_pFuncMap_Client;
+	static UtilityFunctionMap * m_pFuncMap_Login;
+	static UtilityFunctionMap * m_pFuncMap_Agent;
+	static UtilityFunctionMap * m_pFuncMap_Lobby;
+	static UtilityFunctionMap * m_pFuncMap_Games;
+	static UtilityFunctionMap * m_pFuncMap_DB;
 };
 
 #endif

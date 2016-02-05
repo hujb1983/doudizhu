@@ -11,40 +11,28 @@
 #include <TemplatePacketHandler.h>
 #include <TemplateServerConfig.h>
 
-class AgentServer : public TemplateMainServer
+class CDafaultConfig : public TemplateServerConfig
 {
 public:
-	AgentServer()
+	CDafaultConfig()
 	{
 		
 	}
 	
-	~AgentServer()
+	~CDafaultConfig()
 	{
 		
 	}
 	
-	BOOL Init()
-	{
-		InitConfig( );
-		InitDafaultConfig( "./ServerConfig.ini" );
-		Printf( m_ddesc[0] );
-		Printf( m_ddesc[1] );
-		
-		SetServerType(AGENT_SERVER);
-		LoadServerConfig( "./ServerConfig.ini" );
-		Printf( m_desc[0] );
-		Printf( m_desc[1] );
-		return TRUE;
-	}
 };
 
-AgentServer server;
 
 int main() 
 { 
-	if( !server.Init() ) {
-		return -1;
-	}
+	CDafaultConfig _dafaultConfig;
+	_dafaultConfig.InitConfig( );
+	_dafaultConfig.InitDafaultConfig( "./ServerConfig.ini" );
+	_dafaultConfig.Printf( _dafaultConfig.m_ddesc[0] );
+	_dafaultConfig.Printf( _dafaultConfig.m_ddesc[1] );
 	return 0;
 }

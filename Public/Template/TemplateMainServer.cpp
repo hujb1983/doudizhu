@@ -12,10 +12,33 @@ TemplateMainServer::TemplateMainServer(void)
 
 TemplateMainServer::~TemplateMainServer(void)
 {
+    if ( m_pServer ) {
+		delete m_pServer;
+	}
 }
 
 BOOL TemplateMainServer::Init()
 {
+	InitConfig();
+
+	TemplateSessionFactory::Instance()->Init();
+
+    m_desc[0].fnCreateAcceptedObject	= CreateServerSideAcceptedObject;
+	m_desc[0].fnDestroyAcceptedObject	= DestroyServerSideAcceptedObject;
+	m_desc[0].fnDestroyConnectedObject	= DestroyServerSideConnectedObject;
+    m_desc[1].fnCreateAcceptedObject	= CreateClientSideAcceptedObject;
+	m_desc[1].fnDestroyAcceptedObject	= DestroyClientSideAcceptedObject;
+	m_desc[1].fnDestroyConnectedObject	= DestroyClientSideConnectedObject;
+
+    m_pServer = new NetworkServer;
+    if ( !m_pServer->Init( m_desc, 2 ) ) {
+		return FALSE;
+	}
+
+	StartServerSideListen(m_wPort[0]);
+	StartClientSideListen(m_wPort[1]);
+
+	return TRUE;
 }
 
 BOOL TemplateMainServer::StartServerSideListen(WORD wPort)
@@ -64,11 +87,13 @@ BOOL TemplateMainServer::MaintainConnection()
 
 BOOL TemplateMainServer::Update( DWORD dwDeltaTick )
 {
-	if (m_bShutdown) {
-		return TRUE;
+	if (m_pServer) {
+		m_pServer->Update();
 	}
-	
+
 	MaintainConnection();
+
+	return TRUE;
 }
 
 BOOL TemplateMainServer::SendTo( WORD wKey, BYTE * pMsg, WORD wSize)
@@ -109,7 +134,7 @@ void TemplateMainServer::FreeSession(DWORD wIndex) {
 		TemplateMainServer::FreeSessionKey(wKey);
 	}
 }
-	
+
 /**************************************************************
 	创建服务器信息
 **************************************************************/
@@ -182,6 +207,7 @@ VOID DestroyClientSideAcceptedObject( NetworkObject * pObjs ) {
 	TemplateUserSession * pSession = (TemplateUserSession *)pObjs;
 	assert( pSession );
 	pSession->Release();
+	TemplateSessionFactory::Instance()->FreeUserSession(pSession);
 }
 
 VOID DestroyClientSideConnectedObject( NetworkObject * pNetworkObject ) {

@@ -51,9 +51,9 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				
 BinObject  	=   main.o		  
 			
-all: GetConfig
+all: Template
 
-GetConfig: $(BinObject)
+Template: $(BinObject)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 	
 .SUFFIXES: .c .o .cpp
@@ -62,5 +62,5 @@ GetConfig: $(BinObject)
 
 .PHONY:	clean cleanGame
 clean:
-	rm -f GetConfig
+	rm -f Template
 	rm -f main.o

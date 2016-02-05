@@ -9,7 +9,11 @@ public:
 	virtual ~TemplateUserSession();
 
 public:
+    virtual void    Init();
 	virtual void    Clear();
+
+public:
+	virtual void	OnAccept( DWORD dwNetworkIndex );
 	virtual void	OnRecv(BYTE *pMsg, WORD wSize);
 	virtual void	OnConnect( BOOL bSuccess, DWORD dwNetworkIndex );
 	virtual void    OnDisconnect();

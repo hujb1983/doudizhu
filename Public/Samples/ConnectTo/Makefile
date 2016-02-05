@@ -51,9 +51,9 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				
 BinObject  	=   main.o		  
 			
-all: GetConfig
+all: ConnectTo
 
-GetConfig: $(BinObject)
+ConnectTo: $(BinObject)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 	
 .SUFFIXES: .c .o .cpp
@@ -62,5 +62,5 @@ GetConfig: $(BinObject)
 
 .PHONY:	clean cleanGame
 clean:
-	rm -f GetConfig
+	rm -f ConnectTo
 	rm -f main.o

@@ -11,11 +11,11 @@ TemplateAgentSession::~TemplateAgentSession()
 
 void TemplateAgentSession::Clear()
 {
-	
+
 }
 
 void TemplateAgentSession::OnRecv( BYTE *pMsg, WORD wSize ) {
-	
+
 }
 
 void TemplateAgentSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Application" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Application" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Application" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../Common/CommonDefine.h" />
+		<Unit filename="../Common/CommonInclude.h" />
+		<Unit filename="../Common/CommonProtocol.h" />
+		<Unit filename="../Common/CommonProtocolConnect.h" />
+		<Unit filename="../Common/CommonStruct.h" />
+		<Unit filename="../Common/CommonStructConnect.h" />
+		<Unit filename="../Mydbc/MydbcDatabase.cpp" />
+		<Unit filename="../Mydbc/MydbcDatabase.h" />
+		<Unit filename="../Mydbc/MydbcDatabaseDefine.h" />
+		<Unit filename="../Mydbc/MydbcInclude.h" />
+		<Unit filename="../Mydbc/MydbcInterface.cpp" />
+		<Unit filename="../Mydbc/MydbcInterface.h" />
+		<Unit filename="../Mydbc/MydbcMysql.cpp" />
+		<Unit filename="../Mydbc/MydbcMysql.h" />
+		<Unit filename="../Mydbc/MydbcQueryExecuteProcessor.cpp" />
+		<Unit filename="../Mydbc/MydbcQueryExecuteProcessor.h" />
+		<Unit filename="../Mydbc/MydbcQueryFactoryDefine.h" />
+		<Unit filename="../Mydbc/MydbcQueryResult.cpp" />
+		<Unit filename="../Mydbc/MydbcQueryResult.h" />
+		<Unit filename="../Network/NetworkAcceptor.cpp" />
+		<Unit filename="../Network/NetworkAcceptor.h" />
+		<Unit filename="../Network/NetworkConnector.cpp" />
+		<Unit filename="../Network/NetworkConnector.h" />
+		<Unit filename="../Network/NetworkDefine.h" />
+		<Unit filename="../Network/NetworkInclude.h" />
+		<Unit filename="../Network/NetworkObject.cpp" />
+		<Unit filename="../Network/NetworkObject.h" />
+		<Unit filename="../Network/NetworkRecvBuffer.h" />
+		<Unit filename="../Network/NetworkSendBuffer.h" />
+		<Unit filename="../Network/NetworkServer.cpp" />
+		<Unit filename="../Network/NetworkServer.h" />
+		<Unit filename="../Network/NetworkSession.cpp" />
+		<Unit filename="../Network/NetworkSession.h" />
+		<Unit filename="../Network/NetworkSessionList.cpp" />
+		<Unit filename="../Network/NetworkSessionList.h" />
+		<Unit filename="../Network/NetworkSessionPool.cpp" />
+		<Unit filename="../Network/NetworkSessionPool.h" />
+		<Unit filename="../Network/NetworkSocketOption.cpp" />
+		<Unit filename="../Network/NetworkSocketOption.h" />
+		<Unit filename="../Network/NetworkSyncHandler.cpp" />
+		<Unit filename="../Network/NetworkSyncHandler.h" />
+		<Unit filename="../Template/TemplateAgentSession.cpp" />
+		<Unit filename="../Template/TemplateAgentSession.h" />
+		<Unit filename="../Template/TemplateDBSession.cpp" />
+		<Unit filename="../Template/TemplateDBSession.h" />
+		<Unit filename="../Template/TemplateGameSession.cpp" />
+		<Unit filename="../Template/TemplateGameSession.h" />
+		<Unit filename="../Template/TemplateInclude.h" />
+		<Unit filename="../Template/TemplateLobbySession.cpp" />
+		<Unit filename="../Template/TemplateLobbySession.h" />
+		<Unit filename="../Template/TemplateLoginSession.cpp" />
+		<Unit filename="../Template/TemplateLoginSession.h" />
+		<Unit filename="../Template/TemplateMainServer.cpp" />
+		<Unit filename="../Template/TemplateMainServer.h" />
+		<Unit filename="../Template/TemplatePacketHandler.cpp" />
+		<Unit filename="../Template/TemplatePacketHandler.h" />
+		<Unit filename="../Template/TemplateServerConfig.cpp" />
+		<Unit filename="../Template/TemplateServerConfig.h" />
+		<Unit filename="../Template/TemplateServerSession.cpp" />
+		<Unit filename="../Template/TemplateServerSession.h" />
+		<Unit filename="../Template/TemplateSessionFactory.cpp" />
+		<Unit filename="../Template/TemplateSessionFactory.h" />
+		<Unit filename="../Template/TemplateTempSession.cpp" />
+		<Unit filename="../Template/TemplateTempSession.h" />
+		<Unit filename="../Template/TemplateUserSession.cpp" />
+		<Unit filename="../Template/TemplateUserSession.h" />
+		<Unit filename="../Utility/UtilityBuffer.cpp" />
+		<Unit filename="../Utility/UtilityBuffer.h" />
+		<Unit filename="../Utility/UtilityCircuitQueue.h" />
+		<Unit filename="../Utility/UtilityDefine.h" />
+		<Unit filename="../Utility/UtilityDoubleListT.h" />
+		<Unit filename="../Utility/UtilityDrng.cpp" />
+		<Unit filename="../Utility/UtilityDrng.h" />
+		<Unit filename="../Utility/UtilityFunctionMap.h" />
+		<Unit filename="../Utility/UtilityInclude.h" />
+		<Unit filename="../Utility/UtilityIni.cpp" />
+		<Unit filename="../Utility/UtilityIni.h" />
+		<Unit filename="../Utility/UtilityJson.cpp" />
+		<Unit filename="../Utility/UtilityJson.h" />
+		<Unit filename="../Utility/UtilityKeyGenerator.cpp" />
+		<Unit filename="../Utility/UtilityKeyGenerator.h" />
+		<Unit filename="../Utility/UtilityLinkedList.h" />
+		<Unit filename="../Utility/UtilityLogger.cpp" />
+		<Unit filename="../Utility/UtilityLogger.h" />
+		<Unit filename="../Utility/UtilityMD5.cpp" />
+		<Unit filename="../Utility/UtilityMD5.h" />
+		<Unit filename="../Utility/UtilityMemoryFactory.h" />
+		<Unit filename="../Utility/UtilityMutex.cpp" />
+		<Unit filename="../Utility/UtilityMutex.h" />
+		<Unit filename="../Utility/UtilityParserJson.cpp" />
+		<Unit filename="../Utility/UtilityParserJson.h" />
+		<Unit filename="../Utility/UtilityServerInfo.cpp" />
+		<Unit filename="../Utility/UtilityServerInfo.h" />
+		<Unit filename="../Utility/UtilitySingleListT.h" />
+		<Unit filename="../Utility/UtilitySingleton.h" />
+		<Unit filename="../Utility/UtilitySolarHashTable.h" />
+		<Unit filename="../Utility/UtilityString.cpp" />
+		<Unit filename="../Utility/UtilityString.h" />
+		<Unit filename="../Utility/UtilityThread.cpp" />
+		<Unit filename="../Utility/UtilityThread.h" />
+		<Unit filename="../Utility/UtilityThreadPool.cpp" />
+		<Unit filename="../Utility/UtilityThreadPool.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
