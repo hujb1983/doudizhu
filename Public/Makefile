@@ -12,7 +12,8 @@ base_INC = 	-I $(HOME)/Utility \
 			-I $(HOME)/Common \
 			-I $(MYSQLINC)
 	  
-UtilityObjs =   Utility/UtilityLogger.o \
+UtilityObjs =   Utility/UtilityCommand.o \
+				Utility/UtilityLogger.o \
 				Utility/UtilityDrng.o \
 				Utility/UtilityIni.o \
 				Utility/UtilityMD5.o \
@@ -53,6 +54,7 @@ TemplateObjs  =	Template/TemplateServerSession.o \
 				Template/TemplatePacketHandler.o \
 				Template/TemplateSessionFactory.o \
 				Template/TemplateServerConfig.o \
+				Template/TemplateCommand.o \
 				Template/TemplateMainServer.o
 				  
 BINDIR = Bin

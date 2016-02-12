@@ -75,6 +75,8 @@
 		<Unit filename="../Network/NetworkSyncHandler.h" />
 		<Unit filename="../Template/TemplateAgentSession.cpp" />
 		<Unit filename="../Template/TemplateAgentSession.h" />
+		<Unit filename="../Template/TemplateCommand.cpp" />
+		<Unit filename="../Template/TemplateCommand.h" />
 		<Unit filename="../Template/TemplateDBSession.cpp" />
 		<Unit filename="../Template/TemplateDBSession.h" />
 		<Unit filename="../Template/TemplateGameSession.cpp" />
@@ -101,6 +103,8 @@
 		<Unit filename="../Utility/UtilityBuffer.cpp" />
 		<Unit filename="../Utility/UtilityBuffer.h" />
 		<Unit filename="../Utility/UtilityCircuitQueue.h" />
+		<Unit filename="../Utility/UtilityCommand.cpp" />
+		<Unit filename="../Utility/UtilityCommand.h" />
 		<Unit filename="../Utility/UtilityDefine.h" />
 		<Unit filename="../Utility/UtilityDoubleListT.h" />
 		<Unit filename="../Utility/UtilityDrng.cpp" />

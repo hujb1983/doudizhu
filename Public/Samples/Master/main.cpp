@@ -1,55 +1,25 @@
-#include <UtilityDefine.h>
-#include <UtilitySingleton.h>
-#include <UtilityMemoryFactory.h>
-#include <UtilitySolarHashTable.h>
-#include <UtilitySingleListT.h>
-#include <UtilityDoubleListT.h>
-#include <UtilityLinkedList.h>
-#include <UtilityFunctionMap.h>
-#include <UtilityCircuitQueue.h>
-#include <TemplateMainServer.h>
-#include <TemplatePacketHandler.h>
+#include "Process.h"
 
-class AgentServer : public TemplateMainServer
-{
-public:
-	AgentServer()
-	{
-		
-	}
-	
-	~AgentServer()
-	{
-		
-	}
-	
-	BOOL Init()
-	{
-		
-		return TemplateMainServer::Init();
-	}
-};
-
-AgentServer server;
-
-int main() 
+int main( int argc, char ** argv ) 
 { 
-	if( !server.Init() ) {
-		return 0;
+	TemplateCommand cmd;
+	if ( cmd.ToMain(argc, argv)==FALSE ) {		
+		return -1;
 	}
-	
-	TemplatePacketHandler::Init();
-
-	int nShutdown = 1;
-	while( nShutdown ) {
-		usleep(20);
-
-		if ( !server.Update( 0 ) ) {
-			break;
-		}
+	if ( execute_process(cmd, EM_Login)==TRUE ) {
+		return -1;
 	}
-
-	TemplatePacketHandler::Release();
-	
+	if ( execute_process(cmd, EM_Agent)==TRUE ) {
+		return -1;
+	}
+	if ( execute_process(cmd, EM_Lobby)==TRUE ) {
+		return -1;
+	}
+	if ( execute_process(cmd, EM_Game)==TRUE ) {
+		return -1;
+	}
+	if ( execute_process(cmd, EM_DB)==TRUE ) {
+		return -1;
+	}
 	return 0;
 }

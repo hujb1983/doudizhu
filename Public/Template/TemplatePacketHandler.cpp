@@ -19,23 +19,26 @@ TemplatePacketHandler::~TemplatePacketHandler(void)
 
 BOOL TemplatePacketHandler::Init()
 {
-	m_pFuncMap_Client = new UtilityFunctionMap;
-	m_pFuncMap_Login  = new UtilityFunctionMap;
-	m_pFuncMap_Agent  = new UtilityFunctionMap;
-	m_pFuncMap_Lobby  = new UtilityFunctionMap;
-	m_pFuncMap_Lobby  = new UtilityFunctionMap;
-	m_pFuncMap_Games  = new UtilityFunctionMap;
-	m_pFuncMap_DB     = new UtilityFunctionMap;
+	if ( !TemplatePacketHandler::m_pFuncMap_Client )
+    {
+        TemplatePacketHandler::m_pFuncMap_Client = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_Login  = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_Agent  = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_Lobby  = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_Lobby  = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_Games  = new UtilityFunctionMap;
+        TemplatePacketHandler::m_pFuncMap_DB     = new UtilityFunctionMap;
+	}
 }
 
 BOOL TemplatePacketHandler::Release()
 {
-    SAFE_DELETE( m_pFuncMap_Client);
-	SAFE_DELETE( m_pFuncMap_Login );
-	SAFE_DELETE( m_pFuncMap_Agent );
-	SAFE_DELETE( m_pFuncMap_Lobby );
-	SAFE_DELETE( m_pFuncMap_Games );
-	SAFE_DELETE( m_pFuncMap_DB    );
+    SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_Client);
+	SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_Login );
+	SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_Agent );
+	SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_Lobby );
+	SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_Games );
+	SAFE_DELETE( TemplatePacketHandler::m_pFuncMap_DB    );
 }
 
 BOOL TemplatePacketHandler::Register_Client()
@@ -68,7 +71,7 @@ BOOL TemplatePacketHandler::AddHandler_Client ( WORD category, WORD protocol, fn
 	FUNC_Client * pFuncInfo = new FUNC_Client;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_Client->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_Client->Add( pFuncInfo );
 }
 
 BOOL TemplatePacketHandler::AddHandler_Login ( WORD category, WORD protocol, fnHandler fnHandler)
@@ -76,7 +79,7 @@ BOOL TemplatePacketHandler::AddHandler_Login ( WORD category, WORD protocol, fnH
 	FUNC_Login * pFuncInfo = new FUNC_Login;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_Login->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_Login->Add( pFuncInfo );
 }
 
 BOOL TemplatePacketHandler::AddHandler_Agent ( WORD category, WORD protocol, fnHandler fnHandler)
@@ -84,7 +87,7 @@ BOOL TemplatePacketHandler::AddHandler_Agent ( WORD category, WORD protocol, fnH
 	FUNC_Agent * pFuncInfo = new FUNC_Agent;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_Agent->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_Agent->Add( pFuncInfo );
 }
 
 BOOL TemplatePacketHandler::AddHandler_Lobby ( WORD category, WORD protocol, fnHandler fnHandler)
@@ -92,7 +95,7 @@ BOOL TemplatePacketHandler::AddHandler_Lobby ( WORD category, WORD protocol, fnH
 	FUNC_Lobby * pFuncInfo = new FUNC_Lobby;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_Lobby->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_Lobby->Add( pFuncInfo );
 }
 
 BOOL TemplatePacketHandler::AddHandler_Games ( WORD category, WORD protocol, fnHandler fnHandler)
@@ -100,7 +103,7 @@ BOOL TemplatePacketHandler::AddHandler_Games ( WORD category, WORD protocol, fnH
 	FUNC_Games * pFuncInfo = new FUNC_Games;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_Games->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_Games->Add( pFuncInfo );
 }
 
 BOOL TemplatePacketHandler::AddHandler_DB ( WORD category, WORD protocol, fnHandler fnHandler)
@@ -108,7 +111,7 @@ BOOL TemplatePacketHandler::AddHandler_DB ( WORD category, WORD protocol, fnHand
 	FUNC_DB * pFuncInfo = new FUNC_DB;
 	pFuncInfo->m_dwFunctionKey	= MAKELONG( category, protocol );
 	pFuncInfo->m_fnHandler		= fnHandler;
-	return m_pFuncMap_DB->Add( pFuncInfo );
+	return TemplatePacketHandler::m_pFuncMap_DB->Add( pFuncInfo );
 }
 
 void TemplatePacketHandler::ParsePacket_Client ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize )

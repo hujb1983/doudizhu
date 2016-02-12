@@ -24,17 +24,20 @@ public:
 	TemplateMainServer(void);
 	~TemplateMainServer(void);
 
+	void StartServer();
+
 	virtual BOOL Init();
 	virtual BOOL SendTo( WORD wKey, BYTE * pMsg, WORD wSize);
-	
+
 	BOOL StartServerSideListen(WORD wPort);
 	BOOL StartClientSideListen(WORD wPort);
 
 	BOOL Update( DWORD dwDeltaTick );
 
 	BOOL ConnectToServer( TemplateServerSession * pSession, char * pszIP, WORD wPort );
+	void ServerConnector( TemplateServerSession * pSession );
     BOOL MaintainConnection();
-	
+
 private:
 	BYTE m_bShutdown;
 	NetworkServer * m_pServer;
@@ -42,13 +45,13 @@ private:
 public:
 	static void InitSessionArray();
 	static void CloseSessionArray();
-	
+
 	static DWORD AllocSessionKey();
 	static void FreeSessionKey(DWORD wIndex);
-	
+
 	static DWORD SetSession(TemplateServerSession * pSession);
 	static void FreeSession(DWORD wIndex);
-	
+
 private:
 	static TemplateServerSession * m_pSessionArray[MAX_PORT+1];
 	static UtilityKeyGenerator m_cObjectKeys;

@@ -1,5 +1,6 @@
 #include "TemplateInclude.h"
 #include "TemplateMainServer.h"
+#include "TemplatePacketHandler.h"
 
 TemplateServerSession * TemplateMainServer::m_pSessionArray[MAX_PORT+1];
 UtilityKeyGenerator TemplateMainServer::m_cObjectKeys;
@@ -19,10 +20,6 @@ TemplateMainServer::~TemplateMainServer(void)
 
 BOOL TemplateMainServer::Init()
 {
-	InitConfig();
-
-	TemplateSessionFactory::Instance()->Init();
-
     m_desc[0].fnCreateAcceptedObject	= CreateServerSideAcceptedObject;
 	m_desc[0].fnDestroyAcceptedObject	= DestroyServerSideAcceptedObject;
 	m_desc[0].fnDestroyConnectedObject	= DestroyServerSideConnectedObject;
@@ -35,10 +32,41 @@ BOOL TemplateMainServer::Init()
 		return FALSE;
 	}
 
-	StartServerSideListen(m_wPort[0]);
-	StartClientSideListen(m_wPort[1]);
+	if ( m_wPort[0]!=0 ) {
+        printf( "StartServerSideListen:%d;\n", m_wPort[0]);
+        StartServerSideListen(m_wPort[0]);
+	}
+	if ( m_wPort[1]!=0 ) {
+        printf( "StartClientSideListen:%d;\n", m_wPort[1]);
+        StartClientSideListen(m_wPort[1]);
+	}
 
 	return TRUE;
+}
+
+void TemplateMainServer::StartServer()
+{
+	TemplateSessionFactory::Instance()->Init();
+
+	if( !this->Init() )
+    {
+        printf( "Init failed! \n");
+		return;
+	}
+
+    m_bShutdown = TRUE;
+	while( m_bShutdown )
+    {
+		usleep(20);
+		if ( !Update( 0 ) )
+        {
+			break;
+		}
+	}
+
+	TemplateSessionFactory::Instance()->DestroyInstance();
+	TemplatePacketHandler::Release();
+	printf( "Shutdown Server! \n");
 }
 
 BOOL TemplateMainServer::StartServerSideListen(WORD wPort)
@@ -68,10 +96,22 @@ BOOL TemplateMainServer::StartClientSideListen(WORD wPort)
 BOOL TemplateMainServer::ConnectToServer( TemplateServerSession * pSession, char * pszIP, WORD wPort )
 {
 	if (pSession!=NULL) {
+        Sleep(1000);
+        DEBUG_MSG( LVL_DEBUG, "ConnectToServer(%s,%d). \n" , pszIP, wPort);
 		return m_pServer->Connect( SERVER_SYNCHANDLER, (NetworkObject *)pSession, pszIP, wPort );
-		Sleep(1000);
 	}
 	return FALSE;
+}
+
+void TemplateMainServer::ServerConnector( TemplateServerSession * pSession )
+{
+    if ( pSession ) {
+        if ( pSession->TryToConnect() ) {
+            WORD wPort = pSession->GetConnnectPort();
+            std::string szIP = pSession->GetConnnectIP();
+            ConnectToServer( pSession, (char*)szIP.c_str(), wPort );
+        }
+	}
 }
 
 BOOL TemplateMainServer::MaintainConnection()
@@ -80,9 +120,12 @@ BOOL TemplateMainServer::MaintainConnection()
 		return TRUE;
 	}
 
-	/* if (m_pLobbyServer->TryToConnect()) {
-		ConnectToServer( m_pLobbyServer, (char *)m_pLobbyServer->GetConnnectIP().c_str(), m_pLobbyServer->GetConnnectPort() );
-	} */
+	// 连接指定服务器
+	ServerConnector( m_pLoginSession );
+	ServerConnector( m_pAgentSession );
+	ServerConnector( m_pLobbySession );
+	ServerConnector( m_pGameSession  );
+	ServerConnector( m_pDBSession    );
 }
 
 BOOL TemplateMainServer::Update( DWORD dwDeltaTick )

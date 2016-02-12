@@ -46,7 +46,32 @@ void TemplateServerConfig::InitConfig()
     m_wPort[1] = 1234;
 }
 
-void TemplateServerConfig::SetServerType( BYTE byServerType ) {
+void TemplateServerConfig::LoadCompleteServerConfig()
+{
+    m_desc[0].dwSyncHandlerKey			|= SERVER_SYNCHANDLER;
+	m_desc[0].dwMaxAcceptSession		|= m_ddesc[0].dwMaxAcceptSession;
+	m_desc[0].dwMaxConnectSession		|= m_ddesc[0].dwMaxConnectSession;
+	m_desc[0].dwSendBufferSize			|= m_ddesc[0].dwSendBufferSize;//(40M)
+	m_desc[0].dwRecvBufferSize		 	|= m_ddesc[0].dwRecvBufferSize;//(40M)
+	m_desc[0].dwTimeOut				    |= m_ddesc[0].dwTimeOut;
+	m_desc[0].dwNumberOfAcceptThreads	|= m_ddesc[0].dwNumberOfAcceptThreads;
+	m_desc[0].dwNumberOfIoThreads		|= m_ddesc[0].dwNumberOfIoThreads;//(发送和接收)
+	m_desc[0].dwNumberOfConnectThreads	|= m_ddesc[0].dwNumberOfConnectThreads;// Agent Server don't Active connect.
+	m_desc[0].dwMaxPacketSize			|= m_ddesc[0].dwMaxPacketSize; //(每个包大小)
+
+	m_desc[1].dwSyncHandlerKey 			|= CLIENT_SYNCHANDLER;
+	m_desc[1].dwMaxAcceptSession		|= m_ddesc[1].dwMaxAcceptSession;
+	m_desc[1].dwMaxConnectSession		|= m_ddesc[1].dwMaxConnectSession;
+	m_desc[1].dwSendBufferSize			|= m_ddesc[1].dwSendBufferSize; //40960
+	m_desc[1].dwRecvBufferSize			|= m_ddesc[1].dwRecvBufferSize; //40960
+	m_desc[1].dwTimeOut				    |= m_ddesc[1].dwTimeOut;
+	m_desc[1].dwNumberOfAcceptThreads	|= m_ddesc[1].dwNumberOfAcceptThreads;
+	m_desc[1].dwNumberOfIoThreads		|= m_ddesc[1].dwNumberOfIoThreads;//(发送和接收)
+	m_desc[1].dwNumberOfConnectThreads	|= m_ddesc[1].dwNumberOfConnectThreads;
+	m_desc[1].dwMaxPacketSize			|= m_ddesc[1].dwMaxPacketSize;//(每个包大小)
+}
+
+void TemplateServerConfig::SetServerType( eSERVER_TYPE byServerType ) {
 	m_byServerType = byServerType;
 }
 
@@ -124,35 +149,38 @@ void TemplateServerConfig::LoadLocalServer( const char * szServerTypeName, Utili
 {
 	std::string szHandler="";
 
+	m_wPort[0] = 0;
+	m_wPort[1] = 0;
+
 	szHandler = _ini.GetString(szServerTypeName, "ServerHandler", "false" );
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
-		m_desc[m_byIOSize].dwSyncHandlerKey = SERVER_SYNCHANDLER;
-		m_desc[m_byIOSize].dwMaxAcceptSession = _ini.GetInteger(szServerTypeName, "ServerMaxAcceptSession" );
-		m_desc[m_byIOSize].dwMaxConnectSession = _ini.GetInteger(szServerTypeName, "ServerMaxConnectSession" );
-		m_desc[m_byIOSize].dwSendBufferSize = _ini.GetInteger(szServerTypeName, "ServerSendBufferSize" );
-		m_desc[m_byIOSize].dwRecvBufferSize = _ini.GetInteger(szServerTypeName, "ServerRecvBufferSize" );
-		m_desc[m_byIOSize].dwTimeOut = _ini.GetInteger(szServerTypeName, "ServerTimeOut" );
-		m_desc[m_byIOSize].dwNumberOfAcceptThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfAcceptThreads" );
-		m_desc[m_byIOSize].dwNumberOfIoThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfIoThreads" );
-		m_desc[m_byIOSize].dwNumberOfConnectThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfConnectThreads" );
-		m_desc[m_byIOSize].dwMaxPacketSize = _ini.GetInteger(szServerTypeName, "ServerMaxPacketSize" );
-		m_wPort[m_byIOSize] = _ini.GetInteger(szServerTypeName, "ServerListenPort" );
+		m_desc[0].dwSyncHandlerKey = SERVER_SYNCHANDLER;
+		m_desc[0].dwMaxAcceptSession = _ini.GetInteger(szServerTypeName, "ServerMaxAcceptSession" );
+		m_desc[0].dwMaxConnectSession = _ini.GetInteger(szServerTypeName, "ServerMaxConnectSession" );
+		m_desc[0].dwSendBufferSize = _ini.GetInteger(szServerTypeName, "ServerSendBufferSize" );
+		m_desc[0].dwRecvBufferSize = _ini.GetInteger(szServerTypeName, "ServerRecvBufferSize" );
+		m_desc[0].dwTimeOut = _ini.GetInteger(szServerTypeName, "ServerTimeOut" );
+		m_desc[0].dwNumberOfAcceptThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfAcceptThreads" );
+		m_desc[0].dwNumberOfIoThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfIoThreads" );
+		m_desc[0].dwNumberOfConnectThreads = _ini.GetInteger(szServerTypeName, "ServerNumberOfConnectThreads" );
+		m_desc[0].dwMaxPacketSize = _ini.GetInteger(szServerTypeName, "ServerMaxPacketSize" );
+		m_wPort[0] = _ini.GetInteger(szServerTypeName, "ServerListenPort" );
 		m_byIOSize++;
 	}
 
 	szHandler = _ini.GetString(szServerTypeName, "ClientHandler", "false" );
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
-		m_desc[m_byIOSize].dwSyncHandlerKey = CLIENT_SYNCHANDLER;
-		m_desc[m_byIOSize].dwMaxAcceptSession = _ini.GetInteger(szServerTypeName, "ClientMaxAcceptSession" );
-		m_desc[m_byIOSize].dwMaxConnectSession = _ini.GetInteger(szServerTypeName, "ClientMaxConnectSession" );
-		m_desc[m_byIOSize].dwSendBufferSize = _ini.GetInteger(szServerTypeName, "ClientSendBufferSize" );
-		m_desc[m_byIOSize].dwRecvBufferSize = _ini.GetInteger(szServerTypeName, "ClientRecvBufferSize" );
-		m_desc[m_byIOSize].dwTimeOut = _ini.GetInteger(szServerTypeName, "ClientTimeOut" );
-		m_desc[m_byIOSize].dwNumberOfAcceptThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfAcceptThreads" );
-		m_desc[m_byIOSize].dwNumberOfIoThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfIoThreads" );
-		m_desc[m_byIOSize].dwNumberOfConnectThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfConnectThreads" );
-		m_desc[m_byIOSize].dwMaxPacketSize = _ini.GetInteger(szServerTypeName, "ClientMaxPacketSize" );
-		m_wPort[m_byIOSize] = _ini.GetInteger(szServerTypeName, "ClientListenPort" );
+		m_desc[1].dwSyncHandlerKey = CLIENT_SYNCHANDLER;
+		m_desc[1].dwMaxAcceptSession = _ini.GetInteger(szServerTypeName, "ClientMaxAcceptSession" );
+		m_desc[1].dwMaxConnectSession = _ini.GetInteger(szServerTypeName, "ClientMaxConnectSession" );
+		m_desc[1].dwSendBufferSize = _ini.GetInteger(szServerTypeName, "ClientSendBufferSize" );
+		m_desc[1].dwRecvBufferSize = _ini.GetInteger(szServerTypeName, "ClientRecvBufferSize" );
+		m_desc[1].dwTimeOut = _ini.GetInteger(szServerTypeName, "ClientTimeOut" );
+		m_desc[1].dwNumberOfAcceptThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfAcceptThreads" );
+		m_desc[1].dwNumberOfIoThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfIoThreads" );
+		m_desc[1].dwNumberOfConnectThreads = _ini.GetInteger(szServerTypeName, "ClientNumberOfConnectThreads" );
+		m_desc[1].dwMaxPacketSize = _ini.GetInteger(szServerTypeName, "ClientMaxPacketSize" );
+		m_wPort[1] = _ini.GetInteger(szServerTypeName, "ClientListenPort" );
 		m_byIOSize++;
 	}
 }
@@ -164,30 +192,35 @@ void TemplateServerConfig::LoadConnectObjects( const char * szServerTypeName, Ut
 	szHandler = _ini.GetString(szServerTypeName, "ConnectToLoginServer", "false");
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
         m_pLoginSession = TemplateSessionFactory::Instance()->AllocLoginSession();
+        m_pLobbySession->SetServerType( m_byServerType );
 		LoadConnectObjectsAddress("LOGIN_SERVER", _ini, m_pLoginSession);
 	}
 
 	szHandler = _ini.GetString(szServerTypeName, "ConnectToAgentServer", "false");
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
         m_pAgentSession = TemplateSessionFactory::Instance()->AllocAgentSession();
+        m_pAgentSession->SetServerType( m_byServerType );
 		LoadConnectObjectsAddress("AGENT_SERVER", _ini, m_pAgentSession);
 	}
 
 	szHandler = _ini.GetString(szServerTypeName, "ConnectToLobbyServer", "false");
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
         m_pLobbySession = TemplateSessionFactory::Instance()->AllocLobbySession();
+        m_pLobbySession->SetServerType( m_byServerType );
 		LoadConnectObjectsAddress("LOBBY_SERVER", _ini, m_pLobbySession);
 	}
 
 	szHandler = _ini.GetString(szServerTypeName, "ConnectToGameServer", "false");
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
         m_pGameSession = TemplateSessionFactory::Instance()->AllocGameSession();
+        m_pGameSession->SetServerType( m_byServerType );
 		LoadConnectObjectsAddress("GAME_SERVER", _ini, m_pGameSession);
 	}
 
 	szHandler = _ini.GetString(szServerTypeName, "ConnectToDBServer", "false");
 	if (strcmp(szHandler.c_str(),"true")==0 ) {
         m_pDBSession = TemplateSessionFactory::Instance()->AllocDBSession();
+        m_pDBSession->SetServerType( m_byServerType );
 		LoadConnectObjectsAddress("DB_SERVER", _ini, m_pDBSession);
 	}
 }
@@ -212,6 +245,8 @@ void TemplateServerConfig::Printf( SYNCHANDLER_DESC & desc )
     DEBUG_MSG( LVL_DEBUG, "NumberOfIoThreads = %d", desc.dwNumberOfIoThreads );
     DEBUG_MSG( LVL_DEBUG, "NumberOfConnectThreads = %d", desc.dwNumberOfConnectThreads );
     DEBUG_MSG( LVL_DEBUG, "MaxPacketSize = %d \n", desc.dwMaxPacketSize );
+    DEBUG_MSG( LVL_DEBUG, "Port[0] = %d \n", m_wPort[0] );
+    DEBUG_MSG( LVL_DEBUG, "Port[1] = %d \n", m_wPort[1] );
 }
 
 

@@ -29,18 +29,20 @@ public:
 	{
 		InitConfig( );
 		InitDafaultConfig( "./ServerConfig.ini" );
-		Printf( m_ddesc[0] );
-		Printf( m_ddesc[1] );
 		
 		SetServerType(AGENT_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
-		Printf( m_desc[0] );
-		Printf( m_desc[1] );
-		return TRUE;
+		
+		LoadCompleteServerConfig();
+		if ( TemplateMainServer::Init() ) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 };
 
 AgentServer server;
+
 
 int main() 
 { 
@@ -49,7 +51,17 @@ int main()
 	if( !server.Init() ) {
 		return -1;
 	}
-	
+		
+	int nShutdown = 1;
+	while( nShutdown ) {
+		usleep(20);
+
+		if ( !server.Update( 0 ) ) {
+			break;
+		}
+	}
+
+	TemplatePacketHandler::Release();
 	
 	return 0;
 }

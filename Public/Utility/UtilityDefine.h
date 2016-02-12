@@ -7,6 +7,7 @@
 #define __UNIX_SERVER__
 #endif
 
+#include <signal.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

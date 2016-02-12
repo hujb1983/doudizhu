@@ -20,7 +20,8 @@ public:
 
 	virtual void	OnLogString( char * pszLog);
 
-	virtual eSERVER_TYPE GetServerType() { return AGENT_SERVER; }
+	void SetServerType(eSERVER_TYPE byType) { m_byServerType = byType; }
+	virtual eSERVER_TYPE GetServerType() { return m_byServerType; }
 
 	DWORD GetSessionIndex() { return m_dwSessionIndex; }
 	void  SetSessionIndex( DWORD dwIdx) { m_dwSessionIndex = dwIdx; }
@@ -29,9 +30,9 @@ public:
 	void SetAddr( char * pszIP, WORD wPort );
 	BOOL TryToConnect();
 
-	inline std::string & GetConnnectIP() { return m_strConnectIP; }
-	inline WORD  	   & GetConnnectPort() { return m_wConnectPort; }
-	
+	inline std::string GetConnnectIP() { return m_strConnectIP; }
+	inline WORD  	   GetConnnectPort() { return m_wConnectPort; }
+
 	inline BOOL IsConnected() { return m_bConnection; }
 	inline void SetForConnect(BOOL bForConnect)	{ m_bForConnect = bForConnect; }
 	inline bool IsForConnect() { return m_bForConnect; }
@@ -41,6 +42,7 @@ public:
     virtual void  DBResult( WORD cate, WORD ptcl, MydbcQueryResult * pData ){}
 
 public:
+    eSERVER_TYPE m_byServerType;
 	DWORD m_dwSessionIndex;
 	std::string m_strConnectIP;
 	WORD  m_wConnectPort;

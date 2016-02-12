@@ -7,11 +7,29 @@
 #include <UtilityLinkedList.h>
 #include <UtilityFunctionMap.h>
 #include <UtilityCircuitQueue.h>
+#include <TemplateMainServer.h>
+#include <TemplatePacketHandler.h>
+#include "AgentServer.h"
 
 int main() 
 { 
-	UtilityCircuitQueue<int> queue;
+	if( !server.Init() ) {
+		return 0;
+	}
 	
-	char szName[10] = {0};
-	return 0; 
+	TemplatePacketHandler::Init();
+	PacketHandlerServer packet;
+
+	int nShutdown = 1;
+	while( nShutdown ) {
+		usleep(20);
+
+		if ( !server.Update( 0 ) ) {
+			break;
+		}
+	}
+
+	TemplatePacketHandler::Release();
+	
+	return 0;
 }

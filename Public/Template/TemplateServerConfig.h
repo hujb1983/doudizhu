@@ -11,11 +11,14 @@ public:
 
 public:
 	void InitConfig();
-	void SetServerType( BYTE byServerType );
+
+	void SetServerType( eSERVER_TYPE byServerType );
 	void LoadServerConfig( const char * szConfig );
 
 	void InitDafaultConfig( const char * szConfig );
 	void LoadDafaultConfig( UtilityIni & _ini );
+
+	void LoadCompleteServerConfig();
 
 public:
     void Printf( SYNCHANDLER_DESC & desc );
@@ -27,7 +30,7 @@ private://本地服务器类型配置
 
 
 public:
-	BYTE m_byServerType;
+	eSERVER_TYPE m_byServerType;
 
 	// 服务器IOCP处理
 	BYTE m_byDafaultIOSize;

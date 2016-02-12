@@ -30,9 +30,9 @@ class UtilityFunctionMap
 protected:
 	MAP_FUNCTION							m_mFunction; //
 	MAP_FUNCTION_IT							m_itr;
-	
+
 public:
-	
+
 	UtilityFunctionMap(){}
 	~UtilityFunctionMap()
 	{
@@ -79,7 +79,7 @@ public:
 			if(it != m_mFunction.end())	pTemp = it->second;
 		}
 
-		if( pTemp != NULL ) 
+		if( pTemp != NULL )
 		{
 			return FALSE;
 		}
@@ -105,4 +105,4 @@ public:
 };
 
 #endif // UtilityFunctionMAP
-	
+

@@ -9,8 +9,7 @@ MYSQLLIB = -L /usr/lib64/mysql -l mysqlclient -lz -lm
 base_INC = 	-I$(HOME)/Include -I$(MYSQLINC)
 	  
 HomeObjects	=   $(HOME)/Objects
-LibarayObj  =   $(HomeObjects)/UtilityCommand.o \
-				$(HomeObjects)/UtilityLogger.o \
+LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/UtilityDrng.o \
 				$(HomeObjects)/UtilityIni.o \
 				$(HomeObjects)/UtilityMD5.o \
@@ -48,14 +47,13 @@ LibarayObj  =   $(HomeObjects)/UtilityCommand.o \
 				$(HomeObjects)/TemplatePacketHandler.o \
 				$(HomeObjects)/TemplateSessionFactory.o \
 				$(HomeObjects)/TemplateServerConfig.o \
-				$(HomeObjects)/TemplateCommand.o \
 				$(HomeObjects)/TemplateMainServer.o
 				
 BinObject  	=   main.o		  
 			
-all: Master
+all: MsgHandler
 
-Master: $(BinObject)
+MsgHandler: $(BinObject)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 	
 .SUFFIXES: .c .o .cpp
@@ -64,6 +62,5 @@ Master: $(BinObject)
 
 .PHONY:	clean cleanGame
 clean:
-	rm -f Master
+	rm -f MsgHandler
 	rm -f main.o
-	rm -f core.*
