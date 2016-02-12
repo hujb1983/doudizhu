@@ -14,6 +14,7 @@ TemplateUserSession::~TemplateUserSession()
 void TemplateUserSession::Init()
 {
 	this->NotRecvHeader();
+	this->NotSendHeader();
 }
 
 void TemplateUserSession::Clear()
@@ -49,7 +50,7 @@ void TemplateUserSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )
 void TemplateUserSession::OnAccept( DWORD dwNetworkIndex )
 {
 	char buff[1024]  =  {0};
-	char format[256] = 	"{\"protocol\":\"%d\",\"data1\":{\"type\":\"text/json\"}}";
+	char format[256] = 	"{\"protocol\":\"%d\",\"data\":{\"type\":\"text/json\"}}";
 	MSG_ENTERSERVER_ANC msg2;
 	sprintf( buff, format, msg2.m_dwProtocol );
 	WORD len = strlen(buff);

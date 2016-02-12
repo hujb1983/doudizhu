@@ -1,5 +1,5 @@
-#ifndef _YOND_DRNG_H_INCLUDED_
-#define _YOND_DRNG_H_INCLUDED_
+#ifndef _UtilityDrng_H_
+#define _UtilityDrng_H_
 
 bool is_support_drng();
 

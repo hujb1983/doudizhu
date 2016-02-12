@@ -20,7 +20,7 @@ TemplateMainServer::~TemplateMainServer(void)
 
 BOOL TemplateMainServer::Init()
 {
-    m_desc[0].fnCreateAcceptedObject	= CreateServerSideAcceptedObject;
+	m_desc[0].fnCreateAcceptedObject    = CreateServerSideAcceptedObject;
 	m_desc[0].fnDestroyAcceptedObject	= DestroyServerSideAcceptedObject;
 	m_desc[0].fnDestroyConnectedObject	= DestroyServerSideConnectedObject;
     m_desc[1].fnCreateAcceptedObject	= CreateClientSideAcceptedObject;
