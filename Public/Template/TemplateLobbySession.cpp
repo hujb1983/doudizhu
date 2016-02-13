@@ -1,4 +1,6 @@
 #include "TemplateInclude.h"
+#include "TemplatePacket.h"
+#include "TemplatePacketHandler.h"
 
 TemplateLobbySession::TemplateLobbySession()
 {
@@ -14,8 +16,16 @@ void TemplateLobbySession::Clear()
 
 }
 
-void TemplateLobbySession::OnRecv( BYTE *pMsg, WORD wSize ) {
-
+void TemplateLobbySession::OnRecv( BYTE *pMsg, WORD wSize )
+{
+    int pid = 0;
+    if ( wSize>=sizeof(TemplatePacket) )
+    {
+        TemplatePacket * packet = (TemplatePacket *) pMsg;
+        pid = packet->GetProtocol();
+        DEBUG_MSG( LVL_TRACE, "Lobby_PID:%d", pid);
+    }
+    TemplatePacketHandler::ParsePacket_Lobby( pid, this, (MSG_BASE*)pMsg, wSize );
 }
 
 void TemplateLobbySession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )

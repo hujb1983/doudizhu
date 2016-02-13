@@ -1,23 +1,9 @@
 #ifndef _LoginServer_H_
 #define _LoginServer_H_
+#include <TemplateSeasoning.h>
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
-
-/**************************************************************
-	Login专属类型
-**************************************************************/
-NetworkObject * LoginServer_CreateClientObject() {
-    DEBUG_MSG( LVL_TRACE, "LoginServer_CreateClientObject. \n");
-	TemplateUserSession * pObj = TemplateSessionFactory::Instance()->AllocUserSession();
-	if ( pObj==NULL ) {
-		DEBUG_MSG( LVL_TRACE, "AllocUserSession Fail.\n");
-		return NULL;
-	}
-	pObj->NotSendHeader();
-	pObj->NotRecvHeader();
-	return (NetworkObject*)(pObj);
-}
 
 class LoginServer : public TemplateMainServer
 {
@@ -41,10 +27,15 @@ public:
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
 		
-		Printf(m_desc[0]);
-		Printf(m_desc[1]);
+		Printf( m_desc[0] );
+		Printf( m_desc[1] );
 		
 		printf( "LoginServer Init! \n");
+		
+		TemplateSeasoning system;
+		system.GetClientSandHead() = FALSE;
+		system.GetClientRecvHead() = FALSE;
+		system.GetOpenDatabase()   = FALSE;
 		
 		if ( !TemplateMainServer::Init() ) {
 			return FALSE;

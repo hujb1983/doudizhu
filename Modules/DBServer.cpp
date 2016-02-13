@@ -2,6 +2,7 @@
 
 int main() 
 { 
+	TemplateMainServer::InitSessionArray();
 	TemplateSessionFactory::Instance()->Init();
 	
 	DBServer server;

@@ -1,4 +1,6 @@
 #include "TemplateInclude.h"
+#include "TemplatePacket.h"
+#include "TemplatePacketHandler.h"
 
 TemplateAgentSession::TemplateAgentSession()
 {
@@ -14,8 +16,16 @@ void TemplateAgentSession::Clear()
 
 }
 
-void TemplateAgentSession::OnRecv( BYTE *pMsg, WORD wSize ) {
-
+void TemplateAgentSession::OnRecv( BYTE *pMsg, WORD wSize )
+{
+    int pid = 0;
+    if ( wSize>=sizeof(TemplatePacket) )
+    {
+        TemplatePacket * packet = (TemplatePacket *) pMsg;
+        pid = packet->GetProtocol();
+        DEBUG_MSG( LVL_TRACE, "Agent_PID:%d", pid);
+    }
+    TemplatePacketHandler::ParsePacket_Agent( pid, this, (MSG_BASE*)pMsg, wSize );
 }
 
 void TemplateAgentSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )

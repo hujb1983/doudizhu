@@ -65,7 +65,7 @@ void TemplateServerSession::Release()
 
     TemplateSeasoning system;
     if ( system.GetOpenDatabase()==TRUE ) {
-        ReleaseDatabase();
+        ReleaseDB();
     }
 }
 
@@ -107,9 +107,9 @@ BOOL TemplateServerSession::UpdateDatabase()
     return TRUE;
 }
 
-BOOL TemplateServerSession::ReleaseDatabase()
+void TemplateServerSession::ReleaseDB()
 {
-	m_Database.Release();
+	m_Database
 }
 
 void TemplateServerSession::OnAccept( DWORD dwNetworkIndex )

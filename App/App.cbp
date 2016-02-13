@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="App" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/App" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/App" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../Handler/Handler_CalledBank.cpp" />
+		<Unit filename="../Handler/Handler_CalledLicense.cpp" />
+		<Unit filename="../Handler/Handler_CreateBank.cpp" />
+		<Unit filename="../Handler/Handler_DayRanks.cpp" />
+		<Unit filename="../Handler/Handler_Discard.cpp" />
+		<Unit filename="../Handler/Handler_DiscardLicense.cpp" />
+		<Unit filename="../Handler/Handler_FastGame.cpp" />
+		<Unit filename="../Handler/Handler_InitCards.cpp" />
+		<Unit filename="../Handler/Handler_JoinTable.cpp" />
+		<Unit filename="../Handler/Handler_Login.cpp" />
+		<Unit filename="../Handler/Handler_Module.h" />
+		<Unit filename="../Handler/Handler_Offline.cpp" />
+		<Unit filename="../Handler/Handler_Onlines.cpp" />
+		<Unit filename="../Handler/Handler_PreLogin.cpp" />
+		<Unit filename="../Handler/Handler_QuitTable.cpp" />
+		<Unit filename="../Handler/Handler_Reminder.cpp" />
+		<Unit filename="../Handler/Handler_RoomsInfo.cpp" />
+		<Unit filename="../Handler/Handler_Settlement.cpp" />
+		<Unit filename="../Handler/Handler_StartGame.cpp" />
+		<Unit filename="../Handler/Handler_TablesInfo.cpp" />
+		<Unit filename="../Handler/Handler_Trusteeship.cpp" />
+		<Unit filename="../Handler/Handler_WeekRanks.cpp" />
+		<Unit filename="../Handler/PacketHandler.cpp" />
+		<Unit filename="../Handler/PacketHandler.h" />
+		<Unit filename="../Handler/ProtocolGame.h" />
+		<Unit filename="../Handler/ProtocolLogin.h" />
+		<Unit filename="../Handler/ProtocolUpdate.h" />
+		<Unit filename="../Modules/AgentServer.cpp" />
+		<Unit filename="../Modules/AgentServer.h" />
+		<Unit filename="../Modules/DBServer.cpp" />
+		<Unit filename="../Modules/DBServer.h" />
+		<Unit filename="../Modules/GameServer.cpp" />
+		<Unit filename="../Modules/GameServer.h" />
+		<Unit filename="../Modules/LobbyServer.cpp" />
+		<Unit filename="../Modules/LobbyServer.h" />
+		<Unit filename="../Modules/LoginServer.cpp" />
+		<Unit filename="../Modules/LoginServer.h" />
+		<Unit filename="../Modules/Master.cpp" />
+		<Unit filename="../Modules/Master.h" />
+		<Unit filename="../Packet/PacketLogin.cpp" />
+		<Unit filename="../Packet/PacketLogin.h" />
+		<Unit filename="../Packet/PacketRank.cpp" />
+		<Unit filename="../Packet/PacketRank.h" />
+		<Unit filename="../Packet/PacketTable.cpp" />
+		<Unit filename="../Packet/PacketTable.h" />
+		<Unit filename="../Packet/PacketUser.cpp" />
+		<Unit filename="../Packet/PacketUser.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

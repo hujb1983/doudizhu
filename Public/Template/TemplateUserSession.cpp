@@ -1,4 +1,5 @@
 #include "TemplateInclude.h"
+#include "TemplateSeasoning.h"
 #include "TemplatePacketHandler.h"
 #include <UtilityParserJson.h>
 
@@ -13,8 +14,13 @@ TemplateUserSession::~TemplateUserSession()
 
 void TemplateUserSession::Init()
 {
-	this->NotRecvHeader();
-	this->NotSendHeader();
+    TemplateSeasoning system;
+    if ( system.GetClientSandHead()==FALSE ) {
+        this->NotRecvHeader();
+    }
+    if ( system.GetClientRecvHead()==FALSE ) {
+        this->NotSendHeader();
+    }
 }
 
 void TemplateUserSession::Clear()

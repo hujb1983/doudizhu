@@ -1,4 +1,6 @@
 #include "TemplateInclude.h"
+#include "TemplatePacket.h"
+#include "TemplatePacketHandler.h"
 
 TemplateLoginSession::TemplateLoginSession()
 {
@@ -14,8 +16,16 @@ void TemplateLoginSession::Clear()
 
 }
 
-void TemplateLoginSession::OnRecv( BYTE *pMsg, WORD wSize ) {
-
+void TemplateLoginSession::OnRecv( BYTE *pMsg, WORD wSize )
+{
+    int pid = 0;
+    if ( wSize>=sizeof(TemplatePacket) )
+    {
+        TemplatePacket * packet = (TemplatePacket *) pMsg;
+        pid = packet->GetProtocol();
+        DEBUG_MSG( LVL_TRACE, "Login_PID:%d", pid);
+    }
+    TemplatePacketHandler::ParsePacket_Login( pid, this, (MSG_BASE*)pMsg, wSize );
 }
 
 void TemplateLoginSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )

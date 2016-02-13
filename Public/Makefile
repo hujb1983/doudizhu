@@ -54,9 +54,10 @@ TemplateObjs  =	Template/TemplateServerSession.o \
 				Template/TemplatePacketHandler.o \
 				Template/TemplateSessionFactory.o \
 				Template/TemplateServerConfig.o \
+				Template/TemplateMainServer.o \
 				Template/TemplatePacket.o \
 				Template/TemplateCommand.o \
-				Template/TemplateMainServer.o
+				Template/TemplateSeasoning.o 
 				
 BINDIR = Bin
 INCDIR = Include

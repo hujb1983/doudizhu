@@ -1,22 +1,14 @@
 CC = g++
 CFLAGS = -g -fPIC -D_FILELINE -Wno-deprecated 
 #HOME = /mnt/Shared/moche 
-HOME = /usr/cnpoker/doudizhu
+HOME = /usr/cnpoker/doudizhu/Public
 
 MYSQLINC = /usr/include/mysql
 MYSQLLIB = -L /usr/lib64/mysql -l mysqlclient -lz -lm
 
-base_INC = 	-I$(HOME)/Public/Include \
-			-I$(HOME)/Handler \
-			-I$(HOME)/Modules \
-			-I$(HOME)/Packet \
-			-I$(MYSQLINC)
+base_INC = 	-I$(HOME)/Include -I$(MYSQLINC)
 	  
-HomeObjects	=   $(HOME)/Public/Objects
-HomeHandler	=   $(HOME)/Handler
-HomeModules	=   $(HOME)/Modules
-HomePacket	=   $(HOME)/Packet
-
+HomeObjects	=   $(HOME)/Objects
 LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/UtilityDrng.o \
 				$(HomeObjects)/UtilityIni.o \
@@ -61,58 +53,18 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/TemplateSeasoning.o \
 				$(HomeObjects)/TemplateMainServer.o
 				
-PacketObjs	=   $(HomePacket)/PacketLogin.o
-				
-HandlerObjs	=   $(HomeHandler)/Handler_PreLogin.o \
-				$(HomeHandler)/PacketHandler.o				
-				
-LoginObjs 	=   $(HomeModules)/LoginServer.o
-AgentObjs 	=   $(HomeModules)/AgentServer.o
-LobbyObjs 	=   $(HomeModules)/LobbyServer.o
-GameObjs 	=   $(HomeModules)/GameServer.o
-DBObjs 		=   $(HomeModules)/DBServer.o
+BinObject  	=   main.o		  
+			
+all: SessionKey
 
-BINDIR = Servers
-
-all: CheckBin \
-	$(BINDIR)/LoginServer \
-	$(BINDIR)/AgentServer \
-	$(BINDIR)/LobbyServer \
-	$(BINDIR)/GameServer \
-	$(BINDIR)/DBServer
-	
-$(BINDIR)/LoginServer: $(PacketObjs) $(HandlerObjs) $(LoginObjs)
+SessionKey: $(BinObject)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
-
-$(BINDIR)/AgentServer: $(PacketObjs) $(HandlerObjs) $(AgentObjs)
-	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
-
-$(BINDIR)/LobbyServer: $(PacketObjs) $(HandlerObjs) $(LobbyObjs)
-	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
-
-$(BINDIR)/GameServer: $(PacketObjs) $(HandlerObjs) $(GameObjs)
-	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
-	
-$(BINDIR)/DBServer: $(PacketObjs) $(HandlerObjs) $(DBObjs)
-	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
-
-	
 	
 .SUFFIXES: .c .o .cpp
 .cpp.o:
 	$(CC) $(CFLAGS) $(base_INC) -o $@ -c $<
 
-.PHONY: Servers
-CheckBin:
-	test -d "${BINDIR}" || mkdir $(BINDIR)
-
 .PHONY:	clean cleanGame
 clean:
-	rm -f $(BINDIR)/LoginServer
-	rm -f $(BINDIR)/AgentServer
-	rm -f $(BINDIR)/LobbyServer
-	rm -f $(BINDIR)/GameServer
-	rm -f $(BINDIR)/DBServer
-	rm -f $(HOME)/Handler/*.o
-	rm -f $(HOME)/Modules/*.o
-	rm -f $(HOME)/Packet/*.o
+	rm -f SessionKey
+	rm -f main.o

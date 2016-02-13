@@ -1,11 +1,9 @@
 #include <UtilityIni.h>
 #include "TemplateServerConfig.h"
 #include "TemplateMainServer.h"
-#include "TemplateSeasoning.h"
 
 TemplateServerConfig::TemplateServerConfig()
 {
-    memset( this, 0x0, sizeof(TemplateServerConfig) );
 }
 
 TemplateServerConfig::~TemplateServerConfig()
@@ -14,7 +12,6 @@ TemplateServerConfig::~TemplateServerConfig()
 
 void TemplateServerConfig::InitConfig()
 {
-
     m_pLoginSession = NULL;
 	m_pAgentSession = NULL;
 	m_pLobbySession = NULL;
@@ -113,7 +110,6 @@ void TemplateServerConfig::InitDafaultConfig( const char * szConfig )
 {
     UtilityIni _ini( szConfig );
     LoadDafaultConfig( _ini );
-    LoadDatabaseConfig( _ini );
 }
 
 void TemplateServerConfig::LoadDafaultConfig( UtilityIni & _ini )
@@ -151,21 +147,11 @@ void TemplateServerConfig::LoadDafaultConfig( UtilityIni & _ini )
 
 void TemplateServerConfig::LoadDatabaseConfig( UtilityIni & _ini )
 {
-    std::string szIP = _ini.GetString("DATABASE", "DBAddress" );
-    std::string szDB = _ini.GetString("DATABASE", "DBName" );
-    std::string szUsername = _ini.GetString("DATABASE", "DBUsername" );
-    std::string szPasswork = _ini.GetString("DATABASE", "DBPasswork" );
-
-	memcpy( m_szDBAddress, szIP.c_str(), szIP.size() );
-	memcpy( m_szDBName, szDB.c_str(), szDB.size() );
-	memcpy( m_szDBUsername, szUsername.c_str(), szUsername.size() );
-	memcpy( m_szDBPasswork, szPasswork.c_str(), szPasswork.size() );
-
-	TemplateSeasoning system;
-    memcpy( system.GetDBAddress(),  szIP.c_str(), szIP.size() );
-    memcpy( system.GetDBName(), szDB.c_str(), szDB.size() );
-	memcpy( system.GetDBUsername(), szUsername.c_str(), szUsername.size() );
-	memcpy( system.GetDBPassword(), szPasswork.c_str(), szPasswork.size() );
+    = CLIENT_SYNCHANDLER;
+    = _ini.GetInteger(szServerTypeName, "MaxAcceptSession" );
+    = _ini.GetInteger(szServerTypeName, "MaxConnectSession" );
+    = _ini.GetInteger(szServerTypeName, "SendBufferSize" );
+    = _ini.GetInteger(szServerTypeName, "RecvBufferSize" );
 }
 
 void TemplateServerConfig::LoadLocalServer( const char * szServerTypeName, UtilityIni & _ini )

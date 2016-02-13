@@ -85,7 +85,7 @@ BOOL UtilityKeyGenerator::IsExistKey(DWORD dwKey)
 VOID UtilityKeyGenerator::RestoreKey(DWORD key)
 {
 	UtilityGuard sync_cs(m_cs);
-	m_dequeKey.push_back(key);
+	m_dequeKey.push_front(key);
 }
 
 size_t UtilityKeyGenerator::GetSize()

@@ -1,5 +1,6 @@
 #ifndef _DBServer_H_
 #define _DBServer_H_
+#include <TemplateSeasoning.h>
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
@@ -22,7 +23,7 @@ public:
 		InitConfig( );
 		InitDafaultConfig( "./ServerConfig.ini" );
 
-		SetServerType(AGENT_SERVER);
+		SetServerType(DB_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
 		
@@ -30,6 +31,9 @@ public:
 		Printf(m_desc[1]);
 		
 		printf( "DBServer Init! \n");
+		
+		TemplateSeasoning system;
+		system.GetOpenDatabase() = TRUE;
 		
 		if ( TemplateMainServer::Init() ) {
 			return TRUE;

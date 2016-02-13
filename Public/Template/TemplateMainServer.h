@@ -29,10 +29,11 @@ public:
 	virtual BOOL Init();
 	virtual BOOL SendTo( WORD wKey, BYTE * pMsg, WORD wSize);
 
-	BOOL StartServerSideListen(WORD wPort);
-	BOOL StartClientSideListen(WORD wPort);
+	BOOL StartServerSideListen( WORD wPort );
+	BOOL StartClientSideListen( WORD wPort );
 
 	BOOL Update( DWORD dwDeltaTick );
+	BOOL UpdateDatabase( DWORD dwDeltaTick );
 
 	BOOL ConnectToServer( TemplateServerSession * pSession, char * pszIP, WORD wPort );
 	void ServerConnector( TemplateServerSession * pSession );
@@ -55,6 +56,7 @@ public:
 private:
 	static TemplateServerSession * m_pSessionArray[MAX_PORT+1];
 	static UtilityKeyGenerator m_cObjectKeys;
+    static WORD m_uiCountKey;
 };
 
 

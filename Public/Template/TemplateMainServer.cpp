@@ -1,9 +1,11 @@
 #include "TemplateInclude.h"
 #include "TemplateMainServer.h"
+#include "TemplateSeasoning.h"
 #include "TemplatePacketHandler.h"
 
 TemplateServerSession * TemplateMainServer::m_pSessionArray[MAX_PORT+1];
 UtilityKeyGenerator TemplateMainServer::m_cObjectKeys;
+WORD TemplateMainServer::m_uiCountKey;
 
 TemplateMainServer::TemplateMainServer(void)
 {
@@ -40,7 +42,6 @@ BOOL TemplateMainServer::Init()
         printf( "StartClientSideListen:%d;\n", m_wPort[1]);
         StartClientSideListen(m_wPort[1]);
 	}
-
 	return TRUE;
 }
 
@@ -136,17 +137,40 @@ BOOL TemplateMainServer::Update( DWORD dwDeltaTick )
 
 	MaintainConnection();
 
+    TemplateSeasoning system;
+    if ( system.GetOpenDatabase()==TRUE ) {
+	    UpdateDatabase( dwDeltaTick );
+	}
+
 	return TRUE;
+}
+
+BOOL TemplateMainServer::UpdateDatabase( DWORD dwDeltaTick )
+{
+    WORD wJumpObject = 0;
+    WORD wSumObject = TemplateMainServer::m_uiCountKey;
+    for( int i=1; wJumpObject<wSumObject; ++i )
+    {
+        // DEBUG_MSG( LVL_DEBUG, "%d", i);
+        TemplateServerSession * pSession = TemplateMainServer::m_pSessionArray[i];
+        if ( pSession )
+        {
+            pSession->UpdateDatabase();
+            wJumpObject++;
+        }
+    }
+
 }
 
 BOOL TemplateMainServer::SendTo( WORD wKey, BYTE * pMsg, WORD wSize)
 {
 	TemplateServerSession * pSession = TemplateMainServer::m_pSessionArray[wKey];
 	if (pSession!=NULL) {
-		pSession->Send(pMsg, wSize);
+		pSession->Send( pMsg, wSize );
 	}
 	return TRUE;
 }
+
 
 /**************************************************************
 	服务器共享连接信息
@@ -168,13 +192,16 @@ DWORD TemplateMainServer::SetSession(TemplateServerSession * pSession) {
 	if ( TemplateMainServer::m_pSessionArray[wKey]!=NULL ) {
 		TemplateMainServer::FreeSession(wKey); //先释放
 	}
+	DEBUG_MSG( LVL_DEBUG, " SetSession(%d) ", wKey);
 	TemplateMainServer::m_pSessionArray[wKey] = pSession;
+	TemplateMainServer::m_uiCountKey++;
 }
 void TemplateMainServer::FreeSession(DWORD wIndex) {
 	if (wIndex<MAX_PORT) {
 		WORD wKey = (WORD)wIndex;
 		TemplateMainServer::m_pSessionArray[wKey] = NULL;
 		TemplateMainServer::FreeSessionKey(wKey);
+		TemplateMainServer::m_uiCountKey--;
 	}
 }
 
@@ -188,6 +215,7 @@ NetworkObject * CreateServerSideAcceptedObject() {
         DEBUG_MSG( LVL_ERROR, "TemplateTempSession Fail . \n");
 		return NULL;
 	}
+	obj->Clear();
 	return (NetworkObject*)(obj);
 }
 
@@ -196,33 +224,44 @@ VOID DestroyServerSideAcceptedObject( NetworkObject *pObjs ) {
 	TemplateServerSession * pSession = (TemplateServerSession*)pObjs;
 	eSERVER_TYPE eType = pSession->GetServerType();
 	if ( eType==TEMP_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeGameSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
 		TemplateTempSession * obj = (TemplateTempSession*)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		TemplateSessionFactory::Instance()->FreeTempSession(obj);
 	}
 	else if ( eType==LOGIN_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeLoginSession( %x )\n", pObjs);
 		TemplateLoginSession * obj = (TemplateLoginSession*)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
+		obj->Release();
 		TemplateSessionFactory::Instance()->FreeLoginSession(obj);
     }
 	else if ( eType==AGENT_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeAgentSession( %x )\n", pObjs);
 		TemplateAgentSession * obj = (TemplateAgentSession*)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
+		obj->Release();
 		TemplateSessionFactory::Instance()->FreeAgentSession(obj);
     }
 	else if ( eType==LOBBY_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeLobbySession( %x )\n", pObjs);
 		TemplateLobbySession * obj = (TemplateLobbySession *)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
+		obj->Release();
 		TemplateSessionFactory::Instance()->FreeLobbySession(obj);
     }
 	else if ( eType==GAME_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeGameSession( %x )\n", pObjs);
 		TemplateGameSession * obj = (TemplateGameSession *)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
+		obj->Release();
 		TemplateSessionFactory::Instance()->FreeGameSession(obj);
     }
 	else if ( eType==DB_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeDBSession( %x )\n", pObjs);
 		TemplateDBSession * obj = (TemplateDBSession *)pObjs;
+		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
+		obj->Release();
 		TemplateSessionFactory::Instance()->FreeDBSession(obj);
     }
 }

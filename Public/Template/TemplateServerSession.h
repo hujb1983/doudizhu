@@ -38,8 +38,12 @@ public:
 	inline bool IsForConnect() { return m_bForConnect; }
 
 	// 数据库 --
-    void          DBQuery ( Query * pQuery );
-    virtual void  DBResult( WORD cate, WORD ptcl, MydbcQueryResult * pData ){}
+    BOOL          InitDatabase();
+    BOOL          UpdateDatabase();
+    BOOL          ReleaseDatabase();
+    void          DBQuery  ( Query * pQuery );
+    virtual void  DBResult ( WORD cate, WORD ptcl, MydbcQueryResult * pData );
+    MydbcDatabase m_Database;
 
 public:
     eSERVER_TYPE m_byServerType;

@@ -18,6 +18,8 @@ public:
 	void InitDafaultConfig( const char * szConfig );
 	void LoadDafaultConfig( UtilityIni & _ini );
 
+	void LoadDatabaseConfig( UtilityIni & _ini );
+
 	void LoadCompleteServerConfig();
 
 public:
@@ -27,7 +29,6 @@ private://本地服务器类型配置
 	void LoadLocalServer( const char * szServerTypeName, UtilityIni & ini );
 	void LoadConnectObjects( const char * szServerTypeName, UtilityIni & ini );
 	void LoadConnectObjectsAddress(const char*, UtilityIni&, TemplateServerSession *);
-
 
 public:
 	eSERVER_TYPE m_byServerType;
@@ -49,6 +50,12 @@ public://配置需要连接的服务器群
 	TemplateLobbySession * m_pLobbySession;
 	TemplateGameSession * m_pGameSession;
 	TemplateDBSession * m_pDBSession;
+
+private:
+	CHAR m_szDBAddress[16];
+	CHAR m_szDBName[32];
+	CHAR m_szDBUsername[32];
+    CHAR m_szDBPasswork[32];
 };
 
 #endif // _AGENTPLAYER_H_INCLUDED_

@@ -47,7 +47,7 @@ BOOL MydbcMysql::Init( char * pszIPAddress, char * pszDatabaseName, char * pszUs
 {
 	MydbcInterface::Init( pszIPAddress, pszDatabaseName, pszUserName, pszUserPassword, fnErrorMessage );
 
-	ASSERT( m_pMySql != NULL );
+	ASSERT( m_pMySql==NULL );
 
 	m_pMySql = new MYSQL;
 

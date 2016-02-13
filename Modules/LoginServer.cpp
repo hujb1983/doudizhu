@@ -1,6 +1,6 @@
 #include "LoginServer.h"
 
-int main() 
+int main(int argc, char ** argv) 
 { 
 	TemplateSessionFactory::Instance()->Init();
 	
@@ -20,6 +20,7 @@ int main()
 
 	TemplatePacketHandler::Release();
 	// TemplateSessionFactory::Instance();
+	
 	return 0;
 }
 
