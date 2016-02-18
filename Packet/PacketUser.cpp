@@ -1,4 +1,4 @@
-#include "UserPacket.h"
+#include "PacketUser.h"
 
 UserPacket::UserPacket()
 {
@@ -6,12 +6,6 @@ UserPacket::UserPacket()
 
 UserPacket::~UserPacket()
 {
-}
-
-UINT UserPacket::GetTickCount() {  // 时针
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	return tv.tv_sec;
 }
 
 void UserPacket::ToInit()   {   memset( this, 0x0, sizeof(UserPacket) );  }  // 清理
@@ -27,18 +21,9 @@ WORD   UserPacket::GetPacketSize() {   // 取得这个包指针;
     return sizeof(UserPacket);
 }
 
-UINT & UserPacket::GetProtocol()        {  return (m_uiProtocol);   }       // 取得和设置协议号;
-UINT & UserPacket::GetTokenKey()        {  return (m_uiTokenKey);   }       // 安全码;
-UINT & UserPacket::GetValidTime()       {  return (m_uiValidTime);  }       // 取得有效时间;
-UINT & UserPacket::GetValidCount()      {  return (m_uiValidCount); }       // 有效使用次数;
-UINT & UserPacket::GetPortKey()         {  return (m_uiPortKey);    }       // 端口号
-UINT & UserPacket::GetAgentKey()        {  return (m_uiAgentKey);   }       // 代理服务器
-
 UINT & UserPacket::GetLoginTime()       {  return (m_uiLogin);      }       // 登录时间;
 BYTE * UserPacket::GetSSHKey()          {  return (m_szSSHKey);     }      // 登录Key;
 UINT & UserPacket::GetUserId()          {  return (m_uiUserId);     }       // 用户的Id;
-UINT & UserPacket::GetUserKey()         {  return (m_uiPortKey);    }       // 用户的Id;
-UINT & UserPacket::GetOldKey()          {  return (m_uiOldPortKey); }       // 用户以前用的Key;
 CHAR * UserPacket::GetName()            {  return (m_szName);       }       // 取得有效时间;
 INT  & UserPacket::GetMoney()           {  return (m_iMoney);       }       // 财富;
 UINT & UserPacket::GetWoneds()          {  return (m_uiWoneds);     }       // 赢的次数;
@@ -74,9 +59,6 @@ BYTE & UserPacket::GetReminderSize()    {  return (m_byReminderSize);   }       
 void UserPacket::ToPrint()
 {
     DEBUG_MSG( LVL_DEBUG, "Begin");
-
-    DEBUG_MSG( LVL_DEBUG, "| Protocol=%d | TokenKey=%d | ValidTime=%d | ValidCount=%d | PortKey=%d | AgentKey=%d |",
-              m_uiProtocol, m_uiTokenKey, m_uiValidTime, m_uiValidCount, m_uiPortKey, m_uiAgentKey );
 
     DEBUG_MSG( LVL_DEBUG, "| LoginTime=%d |", m_uiLogin);
 

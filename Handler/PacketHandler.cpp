@@ -13,16 +13,19 @@ PacketHandler::PacketHandler(void)
 
 PacketHandler::~PacketHandler(void)
 {
-	
+
 }
 
 BOOL PacketHandler::Register_Client()
 {
+    AddHandler_Client( FromClientToLogin_PID, PreLogin_REQ, FromClientToLogin_PreLogin_REQ  );
+    AddHandler_Client( FromClientToLogin_PID, Login_REQ,    FromClientToAgent_Login_REQ     );
+
 	/*
-	AddHandler_Client( Games_Protocol,  Called_REQ,  	 FromClientToAgent_CalledBank_REQ 	);	
+	AddHandler_Client( Games_Protocol,  Called_REQ,  	 FromClientToAgent_CalledBank_REQ 	);
 	AddHandler_Client( Games_Protocol,  Discards_REQ, 	 FromClientToAgent_Discards_REQ 	);
 	AddHandler_Client( Games_Protocol,  FastGame_REQ, 	 FromClientToLobby_FastGame_REQ 	);
-	AddHandler_Client( Games_Protocol,  JoinTable_REQ, 	 FromClientToAgent_JoinTable_REQ 	);	
+	AddHandler_Client( Games_Protocol,  JoinTable_REQ, 	 FromClientToAgent_JoinTable_REQ 	);
 	AddHandler_Client( Update_Protocol, OnlineInfo_SYN,	 FromLobbyToAgent_Onlines_ANC 		);
 	AddHandler_Client( Games_Protocol, 	QuitTable_REQ, 	 FromClientToAgent_QuitTable_REQ 	);
 	AddHandler_Client( Games_Protocol, 	Reminder_REQ,	 FromClientToAgent_Reminder_REQ 	);
@@ -33,11 +36,13 @@ BOOL PacketHandler::Register_Client()
 
 BOOL PacketHandler::Register_Login()
 {
-	AddHandler_Login( Login_Protocol,	PreLogin_REQ,	FromLoginToDB_PreLogin_REQ	);
+	AddHandler_Login( FromLoginToDB_PID, PreLogin_REQ,  FromLoginToDB_PreLogin_REQ );
 }
 
 BOOL PacketHandler::Register_Agent()
 {
+	AddHandler_Agent( FromAgentToLobby_PID, Login_REQ,  FromAgentToLobby_Login_REQ );
+
 	/*
 	AddHandler_Agent( Games_Protocol, CreateTable_DBR,		FromAgentToGame_CreateBank_REQ		);
 	AddHandler_Agent( Games_Protocol, CalledLicense_REQ, 	FromAgentToGame_CalledLicense_REQ 	);
@@ -50,26 +55,23 @@ BOOL PacketHandler::Register_Agent()
 	AddHandler_Agent( Games_Protocol, Trusteeship_REQ, 		FromAgentToGame_Trusteeship_REQ 	);
 	*/
 }
-	
+
 BOOL PacketHandler::Register_Lobby()
 {
-	/*
-	AddHandler_Lobby( Games_Protocol,  JoinTable_ANC, 	FromLobbyToAgent_JoinTable_ANC 	);
-	AddHandler_Lobby( Update_Protocol, WeekRanks_ANC,  	FromLobbyToAgent_WeekRank_ANC 	);
-	AddHandler_Lobby( Update_Protocol, WeekRanks_SYN, 	FromLobbyToDB_WeekRanks_REQ 	);
-	AddHandler_Lobby( Update_Protocol, TablesInfo_ANC, 	FromLobbyToAgent_TablesInfo_ANC );
-	AddHandler_Lobby( Update_Protocol, TablesInfo_SYN, 	FromLobbyToDB_TablesInfo_REQ 	);
-	AddHandler_Lobby( Update_Protocol, DayRanks_ANC, 	FromLobbyToAgent_DayRanks_ANC 	);
-	AddHandler_Lobby( Update_Protocol, DayRanks_SYN, 	FromLobbyToDB_DayRanks_REQ 		);
-	AddHandler_Lobby( Update_Protocol, RoomsInfo_ANC, 	FromLobbyToAgent_RoomsInfo_ANC 	);
-	AddHandler_Lobby( Update_Protocol, RoomsInfo_SYN, 	FromLobbyToDB_RoomsInfo_REQ		);
-	*/
+    AddHandler_Lobby( FromLobbyToDB_PID,    Login_REQ,      FromLobbyToDB_Login_REQ );
+    AddHandler_Lobby( FromLobbyToAgent_PID, Login_ANC,      FromLobbyToAgent_Login_ANC );
+    AddHandler_Lobby( FromLobbyToAgent_PID, GamePacket_ANC, FromLobbyToAgent_GamePacket_ANC );
+	//AddHandler_Lobby( FromLobbyToAgent_PID, JoinTable_ANC,  FromLobbyToAgent_JoinTable_ANC);
+	AddHandler_Lobby( FromLobbyToAgent_PID, FieldsInfo_ANC, FromLobbyToAgent_FieldsInfo_ANC );
+	AddHandler_Lobby( FromLobbyToAgent_PID, RoomsInfo_ANC,  FromLobbyToAgent_RoomsInfo_ANC );
+	AddHandler_Lobby( FromLobbyToAgent_PID, DayRanks_ANC, 	FromLobbyToAgent_DayRanks_ANC );
+	AddHandler_Lobby( FromLobbyToAgent_PID, WeekRanks_ANC,  FromLobbyToAgent_WeekRanks_ANC );
 }
 
 BOOL PacketHandler::Register_Games()
 {
 	/*
-	AddHandler_Games( Games_Protocol, Called_BRD, 			FromGameToAgent_CalledBank_BRD 		);	
+	AddHandler_Games( Games_Protocol, Called_BRD, 			FromGameToAgent_CalledBank_BRD 		);
 	AddHandler_Games( Games_Protocol, CalledLicense_BRD, 	FromGameToAgent_CalledLicense_BRD 	);
 	AddHandler_Games( Games_Protocol, CreateBank_BRD, 		FromGameToAgent_CreateBank_BRD 		);
 	AddHandler_Games( Games_Protocol, Discards_BRD, 		FromGameToAgent_Discards_BRD 		);
@@ -80,21 +82,24 @@ BOOL PacketHandler::Register_Games()
 	AddHandler_Games( Games_Protocol, Trusteeship_BRD, 		FromGameToAgent_Trusteeship_BRD 	);
 	AddHandler_Games( Games_Protocol, StartGame_BRD, 		FromGameToAgent_StartGame_BRD 		);
 	AddHandler_Games( Games_Protocol, QuitTable_BRD, 		FromGameToAgent_QuitTable_BRD 		);
-	*/	
+	*/
 }
 
 BOOL PacketHandler::Register_DB()
 {
-	/*
-	AddHandler_DB( Login_Protocol,  PreLogin_ANC,  	FromDBToLogin_PreLogin_ANC 	 );
-	AddHandler_DB( Login_Protocol,  PreLogin_DBR,  	FromDBToDB_PreLogin_DBR 	 );
-	AddHandler_DB( Update_Protocol, RoomsInfo_DBR, 	FromDBToDB_RoomsInfo_DBR 	 );
-	AddHandler_DB( Update_Protocol, RoomsInfo_ANC, 	FromDBToLobby_RoomsInfo_ANC  );
-	AddHandler_DB( Update_Protocol, DayRanks_DBR,  	FromDBToDB_DayRanks_DBR 	 );
-	AddHandler_DB( Update_Protocol, DayRanks_ANC,  	FromDBToLobby_DayRanks_ANC 	 );
-	AddHandler_DB( Update_Protocol, TablesInfo_DBR, FromDBToDB_TablesInfo_DBR 	 );
-	AddHandler_DB( Update_Protocol, TablesInfo_ANC, FromDBToLobby_TablesInfo_ANC );
-	AddHandler_DB( Update_Protocol, WeekRanks_DBR, 	FromDBToDB_WeekRanks_DBR 	 );
-	AddHandler_DB( Update_Protocol, WeekRanks_ANC, 	FromDBToLobby_WeekRanks_ANC  );
-	*/
+	AddHandler_DB( FromDBToDB_PID,    PreLogin_DBR,   FromDBToDB_PreLogin_DBR   );
+	AddHandler_DB( FromDBToDB_PID,    Login_DBR,      FromDBToDB_Login_DBR      );
+    AddHandler_DB( FromDBToDB_PID,    GamePacket_DBR, FromDBToDB_GamePacket_DBR );
+	AddHandler_DB( FromDBToLobby_PID, FieldsInfo_DBR, FromDBToDB_FieldsInfo_DBR  );
+	AddHandler_DB( FromDBToLobby_PID, RoomsInfo_DBR,  FromDBToDB_RoomsInfo_DBR );
+	AddHandler_DB( FromDBToLobby_PID, DayRanks_DBR,   FromDBToDB_DayRanks_DBR   );
+	AddHandler_DB( FromDBToLobby_PID, WeekRanks_DBR,  FromDBToDB_WeekRanks_DBR  );
+
+	AddHandler_DB( FromDBToLogin_PID, PreLogin_ANC,   FromDBToLogin_PreLogin_ANC   );
+	AddHandler_DB( FromDBToLobby_PID, Login_ANC,      FromDBToLobby_Login_ANC      );
+	AddHandler_DB( FromDBToLobby_PID, GamePacket_ANC, FromDBToLobby_GamePacket_ANC );
+	AddHandler_DB( FromDBToLobby_PID, FieldsInfo_ANC, FromDBToLobby_FieldsInfo_ANC);
+	AddHandler_DB( FromDBToLobby_PID, RoomsInfo_ANC,  FromDBToLobby_RoomsInfo_ANC );
+	AddHandler_DB( FromDBToLobby_PID, DayRanks_ANC,   FromDBToLobby_DayRanks_ANC   );
+	AddHandler_DB( FromDBToLobby_PID, WeekRanks_ANC,  FromDBToLobby_WeekRanks_ANC  );
 }

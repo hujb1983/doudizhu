@@ -13,7 +13,7 @@ public:
 	static void Release();
 
 public:
-	BYTE & GetClientSandHead();
+	BYTE & GetClientSendHead();
 	BYTE & GetClientRecvHead();
 	BYTE & GetOpenDatabase();
 
@@ -23,7 +23,7 @@ public:
 	CHAR * GetDBPassword();
 
 private:
-	static BYTE m_bClientSandHead;//指定与客户发送有无带头
+	static BYTE m_bClientSendHead;//指定与客户发送有无带头
 	static BYTE m_bClientRecvHead;//指定与客户接收有无带头
 	static BYTE m_bOpenDatabase;//是否打开数据库
 

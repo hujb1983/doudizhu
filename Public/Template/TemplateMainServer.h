@@ -39,6 +39,13 @@ public:
 	void ServerConnector( TemplateServerSession * pSession );
     BOOL MaintainConnection();
 
+public:
+	BOOL SendToLogin( BYTE * pMsg, WORD wSize );
+	BOOL SendToAgent( BYTE * pMsg, WORD wSize );
+	BOOL SendToLobby( BYTE * pMsg, WORD wSize );
+	BOOL SendToGames( BYTE * pMsg, WORD wSize );
+	BOOL SendToDB( BYTE * pMsg, WORD wSize );
+	
 private:
 	BYTE m_bShutdown;
 	NetworkServer * m_pServer;

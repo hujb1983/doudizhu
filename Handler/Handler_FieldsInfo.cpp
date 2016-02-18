@@ -4,27 +4,24 @@
 #include "LobbyServer.h"
 
 /************************************************
-    Query_RoomsInfo
+    Query_FieldsInfo
 ************************************************/
 #pragma pack(push,1)
-class Query_RoomsInfo : public MydbcQueryResult
+class Query_FieldsInfo : public MydbcQueryResult
 {
-	_DECLARE_QUERY_POOL( Query_RoomsInfo );
-
+	_DECLARE_QUERY_POOL( Query_FieldsInfo );
 public:
+
 	enum {
-		RESULT_COL_NUM = 7,
+		RESULT_COL_NUM = 4,
 		PARAM_COL_NUL  = 0,
 	};
 
 	struct sRESULT {
         int  m_iError;             // 错误ID
         int  m_iRoomID;            // 房间ID
-		int  m_iTableID;           // 桌子ID
-		char m_szName[33];         // 房间名称
-		int  m_iDoubles;           // 是否加倍
-		int  m_iOnlines;           // 在线人数
-		int  m_iMoney;             // 带入金额
+		int  m_iTableSize;         // 桌子数量
+		char m_szRoomName[33];     // 房间名称
 		sRESULT() {
 			memset( this, 0, sizeof(sRESULT) );
 		}
@@ -46,44 +43,39 @@ public:
 	_BEGIN_BINDING_DATA( sRESULT, vctRes, uLength, 1, RESULT_COL_NUM)
         _BINDING_COLUMN(0, m_iError)
 		_BINDING_COLUMN(1, m_iRoomID)
-		_BINDING_COLUMN(2, m_iTableID)
-		_BINDING_COLUMN_PTR(3, m_szName)
-		_BINDING_COLUMN(4, m_iDoubles)
-		_BINDING_COLUMN(5, m_iOnlines)
-		_BINDING_COLUMN(6, m_iMoney)
+		_BINDING_COLUMN(2, m_iTableSize)
+		_BINDING_COLUMN_PTR(3, m_szRoomName)
 	_END_BINDING_DATA()
 };
-_IMPL_QUERY_POOL(Query_RoomsInfo);
+_IMPL_QUERY_POOL(Query_FieldsInfo);
 #pragma pack(pop)
 
 
-#define DB_ROOMS_SIZE   (6)
 /************************************************
-    FromLobbyToDB_TableInfo
+    FromLobbyToDB_FieldsInfo_REQ
 ************************************************/
-void FromLobbyToDB_RoomsInfo_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
+void FromLobbyToDB_FieldsInfo_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
 {
-    Query_RoomsInfo * pQuery = Query_RoomsInfo::ALLOC();
-    if ( NULL==pQuery ) {
-        return; // 比较忙
+	Query_FieldsInfo * pQuery = Query_FieldsInfo::ALLOC();
+    if ( NULL == pQuery ) {
+        return;     // 比较忙
     }
 
     char szQueryBuff[256] = {0};
-    snprintf( szQueryBuff, sizeof(szQueryBuff), " call p_TableListInfo(); ");
-
-    pQuery->SetIndex( MAKEDWORD( (WORD)FromDBToDB_PID,(WORD)RoomsInfo_DBR) );
+    snprintf( szQueryBuff, sizeof( szQueryBuff ), " call p_RoomListInfo(); " );
+    pQuery->SetIndex( MAKEDWORD( (WORD)FromDBToDB_PID, (WORD)FieldsInfo_DBR ) );
     pQuery->SetVoidObject( pServerSession );
     pQuery->SetQuery( szQueryBuff );
     pServerSession->DBQuery( pQuery );
 }
 
 /************************************************
-    FromDBToDB_TableInfo_DBR
+    FromDBToDB_FieldsInfo_DBR
 ************************************************/
-void FromDBToDB_RoomsInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
+void FromDBToDB_FieldsInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
 {
     MSG_DBPROXY_RESULT * msg = (MSG_DBPROXY_RESULT*) pMsg;
-    Query_RoomsInfo * pQuery = (Query_RoomsInfo*) msg->m_pData;
+    Query_FieldsInfo * pQuery = (Query_FieldsInfo*) msg->m_pData;
     if ( pQuery )
     {
 
@@ -91,17 +83,18 @@ void FromDBToDB_RoomsInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE *
 }
 
 /************************************************
-    FromDBToLobby_TableInfo_ANC
+    FromClientToAgent_FieldsInfo_ANC
 ************************************************/
-void FromDBToLobby_RoomsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
+void FromDBToLobby_FieldsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
 {
 
 }
 
+
 /************************************************
-    FromLobbyToAgent_TableInfo_ANC
+    FromLobbyToAgent_FieldsInfo_ANC
 ************************************************/
-void FromLobbyToAgent_RoomsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
+void FromLobbyToAgent_FieldsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
 {
     if ( wSize>=sizeof(RankPacket) )
     {
@@ -109,10 +102,9 @@ void FromLobbyToAgent_RoomsInfo_ANC(TemplateServerSession * pServerSession, MSG_
         packet.SetPacket( (BYTE*)pMsg,wSize );
 
         WORD nLen = packet.GetJsonSize();
-        if ( nLen>0 )
-        {
-            packet.GetProtocol() = MAKEDWORD( (WORD)FromLobbyToAgent_PID, (WORD)RoomsInfo_ANC );
-            g_pAgentServer->SendTo( packet.GetUserKey(), (BYTE*)packet.GetJsonData(), nLen );
+        if ( nLen>0 ) {
+            packet.GetProtocol() = MAKEDWORD( (WORD)FromLobbyToAgent_PID, (WORD)FieldsInfo_ANC );
+            g_pAgentServer->SendTo( packet.GetUserKey(), (BYTE*)packet.GetJsonData(), nLen);
         }
     }
 }

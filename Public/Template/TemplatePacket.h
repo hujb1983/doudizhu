@@ -23,20 +23,19 @@ public:
     UINT & GetTokenKey();       // 安全码;
     UINT & GetValidTime();      // 取得有效时间;
     UINT & GetValidCount();     // 有效使用次数;
-    UINT & GetPortKey();        // 端口号
-	UINT & GetUserKey();        // 玩家键值
+    UINT & GetClientKey();      // 端口号
     UINT & GetAgentKey();       // 代理服务器
+	UINT & GetUserKey();        // 玩家键值
 
 private:
     UINT  m_uiProtocol;         // 协议;
     UINT  m_uiTokenKey;         // 生成的返回锁;
     UINT  m_uiValidTime;        // 有效时间限制;
     UINT  m_uiValidCount;       // 有效访问记数;
-    UINT  m_uiPortKey;          // 入口键值;
-    UINT  m_uiOldPortKey;       // 旧的入口键值;
-	
-	UINT  m_uiUserKey;          // 入口键值;
+    UINT  m_uiClientKey;        // 入口键值;
     UINT  m_uiAgentKey;         // 代理键值;
+	UINT  m_uiUserKey;          // 入口键值;
+	
 };
 #pragma pack(pop)
 

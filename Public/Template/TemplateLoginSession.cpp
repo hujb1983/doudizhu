@@ -24,28 +24,31 @@ void TemplateLoginSession::OnRecv( BYTE *pMsg, WORD wSize )
         TemplatePacket * packet = (TemplatePacket *) pMsg;
         pid = packet->GetProtocol();
         DEBUG_MSG( LVL_TRACE, "Login_PID:%d", pid);
-    }
-    TemplatePacketHandler::ParsePacket_Login( pid, this, (MSG_BASE*)pMsg, wSize );
+	}
+	
+	if (pid!=0) {
+		TemplatePacketHandler::ParsePacket_Login( pid, this, (MSG_BASE*)pMsg, wSize );
+	}
 }
 
 void TemplateLoginSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )
 {
-	DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect. \n");
+	DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect.");
 	TemplateServerSession::OnConnect( bSuccess, dwNetworkIndex );
 
 	if ( bSuccess )
     {
-		DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect success. \n");
+		DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect success.");
 		TemplateServerSession::SendServerType();
 		return;
 	}
 
-    DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect fail. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnConnect fail.");
 }
 
 void TemplateLoginSession::OnDisconnect()
 {
-    DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnDisconnect. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateLoginSession::OnDisconnect.");
     TemplateServerSession::OnDisconnect();
 }
 

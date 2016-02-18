@@ -1,8 +1,10 @@
 #ifndef _GameServer_H_
 #define _GameServer_H_
+#include <TemplateSeasoning.h>
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
+#include "PacketHandler.h"
 
 class GameServer : public TemplateMainServer
 {
@@ -10,11 +12,11 @@ public:
 	GameServer()
 	{
 	}
-	
+
 	~GameServer()
 	{
 	}
-	
+
 	virtual BOOL Init()
 	{
 		printf( "GameServer Init! \n");
@@ -22,23 +24,24 @@ public:
 		InitConfig( );
 		InitDafaultConfig( "./ServerConfig.ini" );
 
-		SetServerType(AGENT_SERVER);
+		SetServerType(GAME_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
-		
-		Printf(m_desc[0]);
-		Printf(m_desc[1]);
-		
+
 		printf( "GameServer Init! \n");
-		
 		if ( TemplateMainServer::Init() ) {
-			return TRUE;
+			return FALSE;
 		}
-		
-		return FALSE;
+
+		// Initialize the PacketHandler;
+        TemplatePacketHandler::Init();
+		PacketHandler handler;
+
+		return TRUE;
 	}
 };
 
+extern GameServer * g_pGameServer;
 
 #endif
 

@@ -1,23 +1,22 @@
-#ifndef _PacketRank_H_
-#define _PacketRank_H_
+#ifndef _PacketFields_H_
+#define _PacketFields_H_
 #include <TemplatePacket.h>
 
 
 /*************************************/
 #pragma pack(push, 1)
-
-struct ST_Rank
+struct ST_Field
 {
-    BYTE byIndex;
-    CHAR szName[33];
-    UINT uiRate;
+    BYTE byIndex;// 房间号
+    UINT uiRooms;// 房间数
+    CHAR szName[33];// 名称
 };
 
-class RankPacket : public TemplatePacket
+class FieldsPacket : public TemplatePacket
 {
 public:
-	RankPacket();
-	~RankPacket();
+	FieldsPacket();
+	~FieldsPacket();
 
     virtual void ToInit(); // 初始化
     virtual void ToPrint(); // 打印
@@ -28,20 +27,13 @@ public:
     WORD   GetPacketSize(); // 取得这个包大小;
 
 public:
-    BYTE & GetRankSize(); // 大小
-    ST_Rank & GetRank(BYTE byIndex); // 排行版
-
-    WORD & GetJsonSize();
-    CHAR * GetJsonData();
+    BYTE & GetFieldsSize(); // 大小
+    ST_Field & GetFields(); // 排行版
 
 private:
-    BYTE m_pRankSize; // 数据大小
-    ST_Rank m_sRankData[10]; // 排行版
-
-    WORD m_pJsonSize; // 数据大小
-    CHAR * m_pJsonData; // 指针
+    BYTE m_pFieldsSize; // 数据大小
+    ST_Field m_sFieldsData; // 排行版
 };
-
 #pragma pack(pop)
 /*************************************/
 

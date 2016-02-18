@@ -1,25 +1,26 @@
 #include "LobbyServer.h"
 
-int main() 
-{ 
+int main(int argc, char ** argv)
+{
+	TemplateMainServer::InitSessionArray();
 	TemplateSessionFactory::Instance()->Init();
 	
-	LobbyServer server;
-	if( !server.Init() ) {
+	g_pLobbyServer = new LobbyServer;
+	if( !g_pLobbyServer->Init() ) {
 		return -1;
 	}
-	
+
 	int nShutdown = 1;
 	while( nShutdown ) {
 		usleep(20);
 
-		if ( !server.Update( 0 ) ) {
+		if ( !g_pLobbyServer->Update( 0 ) ) {
 			break;
 		}
 	}
 
 	TemplatePacketHandler::Release();
-	// TemplateSessionFactory::Instance();
+	SAFE_DELETE(g_pLobbyServer);
 	return 0;
 }
 

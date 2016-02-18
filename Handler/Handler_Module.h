@@ -6,7 +6,6 @@
 #include "ProtocolGame.h"
 #include "ProtocolLogin.h"
 #include "ProtocolUpdate.h"
-#include "AgentServer.h"
 
 /*****************************************************
     Handler_CalledBank.cpp
@@ -60,8 +59,15 @@ void FromGameToAgent_JoinTable_BRD(TemplateServerSession * pServerSession, MSG_B
 /*****************************************************
     Handler_Login.cpp
 *****************************************************/
-void FromClient_Login_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
-void FromGame_Login_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromClientToAgent_Login_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromAgentToLobby_Login_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromLobbyToDB_Login_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToDB_Login_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToLobby_Login_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromLobbyToAgent_Login_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToDB_GamePacket_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToLobby_GamePacket_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromLobbyToAgent_GamePacket_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 
 /*****************************************************
     Handler_Onlines.cpp
@@ -71,9 +77,10 @@ void FromLobbyToAgent_Onlines_ANC(TemplateServerSession * pServerSession, MSG_BA
 /************************************************
     Handler_WeekRank.cpp
 ************************************************/
-void FromDBToLogin_PreLogin_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromClientToLogin_PreLogin_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromLoginToDB_PreLogin_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromDBToDB_PreLogin_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToLogin_PreLogin_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 
 /*****************************************************
     Handler_QuitTable.cpp
@@ -109,20 +116,20 @@ void FromGameToAgent_Trusteeship_BRD(TemplateServerSession * pServerSession, MSG
 void FromAgentToGame_Trusteeship_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 
 /************************************************
+    Handler_FieldsInfo.cpp
+************************************************/
+void FromLobbyToAgent_FieldsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromLobbyToDB_FieldsInfo_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToDB_FieldsInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromDBToLobby_FieldsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+
+/************************************************
     Handler_RoomsInfo.cpp
 ************************************************/
 void FromLobbyToAgent_RoomsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromLobbyToDB_RoomsInfo_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromDBToDB_RoomsInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromDBToLobby_RoomsInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
-
-/************************************************
-    Handler_TablesInfo.cpp
-************************************************/
-void FromLobbyToAgent_TablesInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
-void FromLobbyToDB_TablesInfo_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
-void FromDBToDB_TablesInfo_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
-void FromDBToLobby_TablesInfo_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 
 /************************************************
     Handler_DayRank.cpp
@@ -135,7 +142,7 @@ void FromDBToLobby_DayRanks_ANC(TemplateServerSession * pServerSession, MSG_BASE
 /************************************************
     Handler_WeekRank.cpp
 ************************************************/
-void FromLobbyToAgent_WeekRank_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
+void FromLobbyToAgent_WeekRanks_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromLobbyToDB_WeekRanks_REQ(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);
 void FromDBToDB_WeekRanks_DBR(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize );
 void FromDBToLobby_WeekRanks_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize);

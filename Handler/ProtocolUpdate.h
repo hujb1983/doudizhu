@@ -3,13 +3,13 @@
 
 enum eUPDATE_PROTOCOL
 {
-  	RoomsInfo_SYN			= 600,      // 房间信息
+  	FieldsInfo_SYN			= 600,      // 房间信息
+	FieldsInfo_DBR,
+	FieldsInfo_ANC,
+
+	RoomsInfo_SYN           = 610,      // 桌子信息
 	RoomsInfo_DBR,
 	RoomsInfo_ANC,
-
-	TablesInfo_SYN           = 610,      // 桌子信息
-	TablesInfo_DBR,
-	TablesInfo_ANC,
 
 	OnlineInfo_SYN          = 620,      // 在线信息
 	OnlineInfo_DBR,

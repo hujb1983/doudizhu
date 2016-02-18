@@ -1,7 +1,7 @@
 #include "TemplateInclude.h"
 #include "TemplateSeasoning.h"
 #include "TemplateMainServer.h"
-
+#include "TemplatePacketHandler.h"
 
 void CallBackMessage( char * szMessage )
 {
@@ -178,5 +178,7 @@ void TemplateServerSession::DBResult( WORD cate, WORD ptcl, MydbcQueryResult * p
     msg.m_byCategory = cate;
     msg.m_byProtocol = ptcl;
     msg.m_pData = pData;
-    //g_PacketHandler.ParsePacket_Database( this, (MSG_BASE*)&msg, sizeof(msg) );
+	
+	int iPid = MAKEDWORD((WORD)cate,(WORD)ptcl);
+    TemplatePacketHandler::ParsePacket_DB( iPid, this, (MSG_BASE*)&msg, sizeof(MSG_DBPROXY_RESULT) );
 }

@@ -1,6 +1,6 @@
 #include "TemplateSeasoning.h"
 
-BYTE TemplateSeasoning::m_bClientSandHead = TRUE;
+BYTE TemplateSeasoning::m_bClientSendHead = TRUE;
 BYTE TemplateSeasoning::m_bClientRecvHead = TRUE;
 BYTE TemplateSeasoning::m_bOpenDatabase   = TRUE;
 
@@ -20,7 +20,7 @@ TemplateSeasoning::~TemplateSeasoning()
 
 void TemplateSeasoning::Init()
 {
-	TemplateSeasoning::m_bClientSandHead = TRUE;
+	TemplateSeasoning::m_bClientSendHead = TRUE;
 	TemplateSeasoning::m_bClientRecvHead = TRUE;
 	TemplateSeasoning::m_bOpenDatabase   = TRUE;
 }
@@ -30,8 +30,8 @@ void TemplateSeasoning::Release()
 
 }
 
-BYTE & TemplateSeasoning::GetClientSandHead()
-{	return TemplateSeasoning::m_bClientSandHead;	}
+BYTE & TemplateSeasoning::GetClientSendHead()
+{	return TemplateSeasoning::m_bClientSendHead;	}
 
 BYTE & TemplateSeasoning::GetClientRecvHead()
 {	return TemplateSeasoning::m_bClientRecvHead;	}

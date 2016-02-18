@@ -7,20 +7,20 @@ LoginPacket::LoginPacket()
 
 LoginPacket::~LoginPacket()
 {
-	
+
 }
 
 void LoginPacket::ToInit()
 {
-	
+
 }
 
 void LoginPacket::ToPrint()
 {
-	
+
 }
 
-void LoginPacket::SetPacket(BYTE * byData, WORD wSize) 
+void LoginPacket::SetPacket(BYTE * byData, WORD wSize)
 {	memcpy( this, byData, wSize ); }  // 设置包结构
 
 BYTE * LoginPacket::GetPacket(BYTE * _data, WORD _size ) {
@@ -31,6 +31,7 @@ WORD LoginPacket::GetPacketSize() { // 取得这个包指针;
 	return sizeof(LoginPacket);
 }
 
+UINT & LoginPacket::GetAccessID()	{  return (m_uiAccessID);   }// 接入ID;
 UINT & LoginPacket::GetUserid()		{  return (m_uiUserid);   	}// 用户;
 CHAR * LoginPacket::GetUsername()	{  return (m_szUsername);   }// 名称;
 CHAR * LoginPacket::GetPassword()	{  return (m_szPassword);   }// 密码;

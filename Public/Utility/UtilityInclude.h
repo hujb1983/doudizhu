@@ -16,5 +16,6 @@
 #include "UtilityThreadPool.h"
 #include "UtilityKeyGenerator.h"
 #include "UtilityCommand.h"
+#include "UtilityTimer.h"
 
 #endif // _UtilityInclude_H_

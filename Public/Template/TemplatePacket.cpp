@@ -17,17 +17,16 @@ UINT & TemplatePacket::GetProtocol()        {  return (m_uiProtocol);   }       
 UINT & TemplatePacket::GetTokenKey()        {  return (m_uiTokenKey);   }       // 安全码;
 UINT & TemplatePacket::GetValidTime()       {  return (m_uiValidTime);  }       // 取得有效时间;
 UINT & TemplatePacket::GetValidCount()      {  return (m_uiValidCount); }       // 有效使用次数;
-UINT & TemplatePacket::GetPortKey()         {  return (m_uiPortKey);    }       // 端口号
-
-UINT & TemplatePacket::GetUserKey()         {  return (m_uiUserKey);   }       // 代理服务器
+UINT & TemplatePacket::GetClientKey()       {  return (m_uiClientKey);  }       // 端口号
 UINT & TemplatePacket::GetAgentKey()        {  return (m_uiAgentKey);   }       // 代理服务器
+UINT & TemplatePacket::GetUserKey()         {  return (m_uiUserKey);    }       // 代理服务器
 
 void TemplatePacket::ToPrint()
 {
     DEBUG_MSG( LVL_DEBUG, "Begin");
 
     DEBUG_MSG( LVL_DEBUG, "| Protocol=%d | TokenKey=%d | ValidTime=%d | ValidCount=%d | PortKey=%d | AgentKey=%d |",
-              m_uiProtocol, m_uiTokenKey, m_uiValidTime, m_uiValidCount, m_uiPortKey, m_uiAgentKey );
+              m_uiProtocol, m_uiTokenKey, m_uiValidTime, m_uiValidCount, m_uiClientKey, m_uiAgentKey );
 
     DEBUG_MSG( LVL_DEBUG, "End\n");
 }

@@ -25,27 +25,30 @@ void TemplateDBSession::OnRecv( BYTE *pMsg, WORD wSize )
         pid = packet->GetProtocol();
         DEBUG_MSG( LVL_TRACE, "DB_PID:%d", pid);
     }
-    TemplatePacketHandler::ParsePacket_DB( pid, this, (MSG_BASE*)pMsg, wSize );
+		
+	if (pid!=0) {
+		TemplatePacketHandler::ParsePacket_DB( pid, this, (MSG_BASE*)pMsg, wSize );
+	}
 }
 
 void TemplateDBSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )
 {
-	DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect. \n");
+	DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect.");
 	TemplateServerSession::OnConnect( bSuccess, dwNetworkIndex );
 
 	if ( bSuccess )
     {
-		DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect success. \n");
+		DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect success.");
 		TemplateServerSession::SendServerType();
 		return;
 	}
 
-    DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect fail. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnConnect fail.");
 }
 
 void TemplateDBSession::OnDisconnect()
 {
-    DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnDisconnect. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateDBSession::OnDisconnect.");
     TemplateServerSession::OnDisconnect();
 }
 

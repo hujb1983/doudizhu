@@ -1,25 +1,25 @@
 #include "GameServer.h"
 
-int main() 
-{ 
+int main(int argc, char ** argv)
+{
+	TemplateMainServer::InitSessionArray();
 	TemplateSessionFactory::Instance()->Init();
-	
-	GameServer server;
-	if( !server.Init() ) {
+
+	g_pGameServer = new GameServer;
+	if( !g_pGameServer->Init() ) {
 		return -1;
 	}
-	
+
 	int nShutdown = 1;
 	while( nShutdown ) {
 		usleep(20);
-
-		if ( !server.Update( 0 ) ) {
+		if ( !g_pGameServer->Update( 0 ) ) {
 			break;
 		}
 	}
 
 	TemplatePacketHandler::Release();
-	// TemplateSessionFactory::Instance();
+	SAFE_DELETE(g_pGameServer);
 	return 0;
 }
 

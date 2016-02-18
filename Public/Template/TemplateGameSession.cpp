@@ -25,27 +25,31 @@ void TemplateGameSession::OnRecv( BYTE *pMsg, WORD wSize )
         pid = packet->GetProtocol();
         DEBUG_MSG( LVL_TRACE, "Games_PID:%d", pid);
     }
-    TemplatePacketHandler::ParsePacket_Games( pid, this, (MSG_BASE*)pMsg, wSize );
+	
+	if (pid!=0) 
+	{
+		TemplatePacketHandler::ParsePacket_Games( pid, this, (MSG_BASE*)pMsg, wSize );
+	}
 }
 
 void TemplateGameSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )
 {
-	DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect. \n");
+	DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect.");
 	TemplateServerSession::OnConnect( bSuccess, dwNetworkIndex );
 
 	if ( bSuccess )
     {
-		DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect success. \n");
+		DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect success.");
 		TemplateServerSession::SendServerType();
 		return;
 	}
 
-    DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect fail. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnConnect fail.");
 }
 
 void TemplateGameSession::OnDisconnect()
 {
-    DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnDisconnect. \n");
+    DEBUG_MSG( LVL_DEBUG, "TemplateGameSession::OnDisconnect.");
     TemplateServerSession::OnDisconnect();
 }
 

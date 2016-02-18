@@ -1,5 +1,6 @@
 #include "TemplateInclude.h"
 #include "TemplateSeasoning.h"
+#include "TemplateMainServer.h"
 #include "TemplatePacketHandler.h"
 #include <UtilityParserJson.h>
 
@@ -15,11 +16,11 @@ TemplateUserSession::~TemplateUserSession()
 void TemplateUserSession::Init()
 {
     TemplateSeasoning system;
-    if ( system.GetClientSandHead()==FALSE ) {
-        this->NotRecvHeader();
+    if ( system.GetClientSendHead()==FALSE ) {
+        this->NotSendHeader();
     }
     if ( system.GetClientRecvHead()==FALSE ) {
-        this->NotSendHeader();
+        this->NotRecvHeader();
     }
 }
 
@@ -42,19 +43,15 @@ void TemplateUserSession::OnRecv( BYTE *pMsg, WORD wSize )
 
 void TemplateUserSession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )
 {
-	/*
-	WORD _wUserKey = TemplateMain::AllocSessionKey();
-	if ( _wUserKey == 0 ) {
-	    return;
-    }
-
-	this->SetUserKey( _wUser );
-    TemplateMain::SetSession( _wKey, this);
-	*/
+	
 }
 
 void TemplateUserSession::OnAccept( DWORD dwNetworkIndex )
 {
+	WORD wKey = TemplateMainServer::AllocSessionKey();
+	this->SetSessionIndex( wKey );
+	TemplateMainServer::SetSession(this);
+	
 	char buff[1024]  =  {0};
 	char format[256] = 	"{\"protocol\":\"%d\",\"data\":{\"type\":\"text/json\"}}";
 	MSG_ENTERSERVER_ANC msg2;

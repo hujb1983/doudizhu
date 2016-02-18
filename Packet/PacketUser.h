@@ -1,45 +1,28 @@
-#ifndef _UserPacket_H_INCLUDED_
-#define _UserPacket_H_INCLUDED_
-
-#include <Utility.h>
-#include <Common.h>
-#include <Network.h>
-#include "HeadPacket.h"
+#ifndef _PacketUser_H_
+#define _PacketUser_H_
+#include <TemplatePacket.h>
 
 /*************************************/
 #pragma pack(push, 1)
-
-class UserPacket
+class UserPacket : public TemplatePacket
 {
-public:
-    static UINT GetTickCount();     // 时间
-
 public:
 
 	UserPacket();
 	~UserPacket();
 
-    void ToInit();                  // 初始化
-    void ToPrint();                 // 打印
-    void SetPacket(BYTE *, WORD );  // 设置包结构
+    virtual void ToInit();                  // 初始化
+    virtual void ToPrint();                 // 打印
+    virtual void SetPacket(BYTE *, WORD );  // 设置包结构
 
 public:
 
     BYTE * GetPacket(BYTE *, WORD);   // 给一个指针并获得头指针;
     WORD   GetPacketSize();               // 取得这个包大小;
 
-    UINT & GetProtocol();       // 取得和设置协议号;
-    UINT & GetTokenKey();       // 安全码;
-    UINT & GetValidTime();      // 取得有效时间;
-    UINT & GetValidCount();     // 有效使用次数;
-    UINT & GetPortKey();        // 端口号
-    UINT & GetAgentKey();       // 代理服务器
-
     UINT & GetLoginTime();      // 登录时间;
     BYTE * GetSSHKey();         // 登录Key;
     UINT & GetUserId();         // 用户的ID;
-    UINT & GetUserKey();        // 用户的Key;
-    UINT & GetOldKey();         // 用户以前用的Key;
     CHAR * GetName();           // 取得有效时间;
     INT  & GetMoney();          // 财富;
     UINT & GetWoneds();         // 赢的次数;
@@ -75,15 +58,6 @@ public:
     BYTE & GetReminderSize();      // 出牌大小;
 
 private:
-
-    UINT  m_uiProtocol;         // 协议;
-    UINT  m_uiTokenKey;         // 生成的返回锁;
-    UINT  m_uiValidTime;        // 有效时间限制;
-    UINT  m_uiValidCount;       // 有效访问记数;
-    UINT  m_uiPortKey;          // 入口键值;
-    UINT  m_uiOldPortKey;       // 旧的入口键值;
-    UINT  m_uiAgentKey;         // 代理键值;
-
     UINT  m_uiLogin;            // 登录时间;
     BYTE  m_szSSHKey[128];      // 登陆Key;
     UINT  m_uiUserId;           // 数据库编号;
@@ -120,8 +94,7 @@ private:
     CHAR m_szReminderPokers[60];
     BYTE m_byReminderSize;
 };
-
 #pragma pack(pop)
 /*************************************/
 
-#endif // _UserPacket_H_INCLUDED_
+#endif // _PacketUser_H_

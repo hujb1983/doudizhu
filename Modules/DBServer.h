@@ -4,6 +4,8 @@
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
+#include "PacketHandler.h"
+
 
 class DBServer : public TemplateMainServer
 {
@@ -11,11 +13,11 @@ public:
 	DBServer()
 	{
 	}
-	
+
 	~DBServer()
 	{
 	}
-	
+
 	virtual BOOL Init()
 	{
 		printf( "DBServer Init! \n");
@@ -26,22 +28,23 @@ public:
 		SetServerType(DB_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
-		
-		Printf(m_desc[0]);
-		Printf(m_desc[1]);
-		
-		printf( "DBServer Init! \n");
-		
+
 		TemplateSeasoning system;
 		system.GetOpenDatabase() = TRUE;
-		
-		if ( TemplateMainServer::Init() ) {
-			return TRUE;
+
+		if ( !TemplateMainServer::Init() ) {
+			return FALSE;
 		}
-		
-		return FALSE;
+
+		// Initialize the PacketHandler;
+        TemplatePacketHandler::Init();
+		PacketHandler handler;
+
+		return TRUE;
 	}
 };
+
+extern DBServer * g_pDBServer;
 
 #endif
 

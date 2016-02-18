@@ -1,11 +1,12 @@
 #include "AgentServer.h"
 
-int main() 
+int main(int argc, char ** argv) 
 { 
+	TemplateMainServer::InitSessionArray();
 	TemplateSessionFactory::Instance()->Init();
 	
-	AgentServer server;
-	if( !server.Init() ) {
+	g_pAgentServer = new AgentServer;
+	if( !g_pAgentServer->Init() ) {
 		return -1;
 	}
 		
@@ -13,12 +14,13 @@ int main()
 	while( nShutdown ) {
 		usleep(20);
 
-		if ( !server.Update( 0 ) ) {
+		if ( !g_pAgentServer->Update( 0 ) ) {
 			break;
 		}
 	}
 
 	TemplatePacketHandler::Release();
-	// TemplateSessionFactory::Instance();
+	SAFE_DELETE(g_pAgentServer);
+	
 	return 0;
 }

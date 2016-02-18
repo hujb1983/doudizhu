@@ -3,6 +3,7 @@
 #include <TemplatePacketHandler.h>
 #include <CommonProtocol.h>
 #include "Handler_Module.h"
+#include "ProtocolServerType.h"
 #include "ProtocolGame.h"
 #include "ProtocolLogin.h"
 #include "ProtocolUpdate.h"
@@ -12,7 +13,7 @@ class PacketHandler : public TemplatePacketHandler
 public:
 	PacketHandler();
 	~PacketHandler();
-	
+
 public:
 	BOOL Register_Client();
 	BOOL Register_Login();

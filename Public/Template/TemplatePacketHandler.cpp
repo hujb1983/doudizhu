@@ -116,6 +116,7 @@ BOOL TemplatePacketHandler::AddHandler_DB ( WORD category, WORD protocol, fnHand
 
 void TemplatePacketHandler::ParsePacket_Client ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize )
 {
+	assert(NULL != pMsg);
 	FUNC_Client * pFuncInfo = (FUNC_Client *)TemplatePacketHandler::m_pFuncMap_Client->Find( dwProtocol );
 	if (pFuncInfo) {
 		pFuncInfo->m_fnHandler( pServerSession, pMsg, wSize );
@@ -134,6 +135,7 @@ void TemplatePacketHandler::ParsePacket_Login ( DWORD dwProtocol, TemplateServer
 void TemplatePacketHandler::ParsePacket_Agent ( DWORD dwProtocol, TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize )
 {
 	assert(NULL != pMsg);
+	DEBUG_MSG(LVL_DEBUG, "ParsePacket_Agent(%x)", TemplatePacketHandler::m_pFuncMap_Agent);
 	FUNC_Agent * pFuncInfo = (FUNC_Agent *)TemplatePacketHandler::m_pFuncMap_Agent->Find( dwProtocol );
 	if (pFuncInfo) {
 		pFuncInfo->m_fnHandler( pServerSession, pMsg, wSize );

@@ -175,7 +175,6 @@ BOOL NetworkSession::DoSend(NetworkSyncHandler * pSync)
 				pSync->ModEpollEvent(this, event);
 			}
 		}
-
 		m_pSendBuffer->Completion( (ret + lenEx) );
 	}
 }

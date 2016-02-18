@@ -16,6 +16,7 @@ UtilityObjs =   Utility/UtilityCommand.o \
 				Utility/UtilityLogger.o \
 				Utility/UtilityDrng.o \
 				Utility/UtilityIni.o \
+				Utility/UtilityTimer.o \
 				Utility/UtilityMD5.o \
 				Utility/UtilityJson.o \
 				Utility/UtilityMutex.o \
@@ -83,7 +84,6 @@ $(BINDIR)/testMakefile: $(UtilityObjs) $(MydbcObjs) $(NetworkObjs) $(TemplateObj
 
 .PHONY: CheckDir
 CheckDir:
-	test -d "${BINDIR}" || mkdir $(BINDIR)
 	test -d "${INCDIR}" || mkdir $(INCDIR)
 	test -d "${OBJDIR}" || mkdir $(OBJDIR)
 

@@ -22,6 +22,7 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/UtilityIni.o \
 				$(HomeObjects)/UtilityMD5.o \
 				$(HomeObjects)/UtilityJson.o \
+				$(HomeObjects)/UtilityTimer.o \
 				$(HomeObjects)/UtilityMutex.o \
 				$(HomeObjects)/UtilityString.o \
 				$(HomeObjects)/UtilityThread.o \
@@ -61,14 +62,25 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/TemplateSeasoning.o \
 				$(HomeObjects)/TemplateMainServer.o
 				
-PacketObjs	=   $(HomePacket)/PacketLogin.o
+PacketObjs	=   $(HomePacket)/PacketLogin.o \
+				$(HomePacket)/PacketUser.o \
+				$(HomePacket)/PacketFields.o \
+				$(HomePacket)/PacketRooms.o \
+				$(HomePacket)/PacketRank.o
 				
-HandlerObjs	=   $(HomeHandler)/Handler_PreLogin.o \
-				$(HomeHandler)/PacketHandler.o				
+HandlerObjs	=   $(HomeHandler)/ServerExtern.o \
+				$(HomeHandler)/PacketHandler.o \
+				$(HomeHandler)/Handler_PreLogin.o \
+				$(HomeHandler)/Handler_Login.o \
+				$(HomeHandler)/Handler_FieldsInfo.o \
+				$(HomeHandler)/Handler_RoomsInfo.o \
+				$(HomeHandler)/Handler_DayRanks.o \
+				$(HomeHandler)/Handler_WeekRanks.o
 				
 LoginObjs 	=   $(HomeModules)/LoginServer.o
 AgentObjs 	=   $(HomeModules)/AgentServer.o
-LobbyObjs 	=   $(HomeModules)/LobbyServer.o
+LobbyObjs 	=   $(HomeModules)/LobbyUpdate.o \
+				$(HomeModules)/LobbyServer.o
 GameObjs 	=   $(HomeModules)/GameServer.o
 DBObjs 		=   $(HomeModules)/DBServer.o
 

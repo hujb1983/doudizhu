@@ -1,8 +1,10 @@
 #ifndef _LobbyServer_H_
 #define _LobbyServer_H_
+#include <TemplateSeasoning.h>
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
+#include "PacketHandler.h"
 
 class LobbyServer : public TemplateMainServer
 {
@@ -10,11 +12,11 @@ public:
 	LobbyServer()
 	{
 	}
-	
+
 	~LobbyServer()
 	{
 	}
-	
+
 	virtual BOOL Init()
 	{
 		printf( "LobbyServer Init! \n");
@@ -25,20 +27,21 @@ public:
 		SetServerType(LOBBY_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
-		
-		Printf(m_desc[0]);
-		Printf(m_desc[1]);
-		
+
 		printf( "LobbyServer Init! \n");
-		
-		if ( TemplateMainServer::Init() ) {
-			return TRUE;
+		if ( !TemplateMainServer::Init() ) {
+			return FALSE;
 		}
-		
-		return FALSE;
+
+		// Initialize the PacketHandler;
+        TemplatePacketHandler::Init();
+		PacketHandler handler;
+
+		return TRUE;
 	}
 };
 
+extern LobbyServer * g_pLobbyServer;
 
 #endif
 

@@ -4,6 +4,7 @@
 #include <TemplateSessionFactory.h>
 #include <TemplatePacketHandler.h>
 #include <TemplateMainServer.h>
+#include "PacketHandler.h"
 
 class LoginServer : public TemplateMainServer
 {
@@ -11,11 +12,11 @@ public:
 	LoginServer()
 	{
 	}
-	
+
 	~LoginServer()
 	{
 	}
-	
+
 	virtual BOOL Init()
 	{
 		printf( "LoginServer::Init! \n");
@@ -26,25 +27,25 @@ public:
 		SetServerType(LOGIN_SERVER);
 		LoadServerConfig( "./ServerConfig.ini" );
 		LoadCompleteServerConfig();
-		
-		Printf( m_desc[0] );
-		Printf( m_desc[1] );
-		
+
 		printf( "LoginServer Init! \n");
-		
 		TemplateSeasoning system;
-		system.GetClientSandHead() = FALSE;
+		system.GetClientSendHead() = FALSE;
 		system.GetClientRecvHead() = FALSE;
 		system.GetOpenDatabase()   = FALSE;
-		
+
 		if ( !TemplateMainServer::Init() ) {
 			return FALSE;
 		}
-		
+
+		// Initialize the PacketHandler;
+		TemplatePacketHandler::Init();
+		PacketHandler handler;
 		return TRUE;
 	}
 };
 
+extern LoginServer * g_pLoginServer;
 
 #endif
 

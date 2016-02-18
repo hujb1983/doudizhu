@@ -35,11 +35,11 @@ BOOL TemplateMainServer::Init()
 	}
 
 	if ( m_wPort[0]!=0 ) {
-        printf( "StartServerSideListen:%d;\n", m_wPort[0]);
+        DEBUG_MSG( LVL_DEBUG, "StartServerSideListen:(%d);", m_wPort[0]);
         StartServerSideListen(m_wPort[0]);
 	}
 	if ( m_wPort[1]!=0 ) {
-        printf( "StartClientSideListen:%d;\n", m_wPort[1]);
+        DEBUG_MSG( LVL_DEBUG, "StartClientSideListen:(%d);", m_wPort[1]);
         StartClientSideListen(m_wPort[1]);
 	}
 	return TRUE;
@@ -98,7 +98,7 @@ BOOL TemplateMainServer::ConnectToServer( TemplateServerSession * pSession, char
 {
 	if (pSession!=NULL) {
         Sleep(1000);
-        DEBUG_MSG( LVL_DEBUG, "ConnectToServer(%s,%d). \n" , pszIP, wPort);
+        DEBUG_MSG( LVL_DEBUG, "ConnectToServer(%s,%d)." , pszIP, wPort);
 		return m_pServer->Connect( SERVER_SYNCHANDLER, (NetworkObject *)pSession, pszIP, wPort );
 	}
 	return FALSE;
@@ -159,7 +159,6 @@ BOOL TemplateMainServer::UpdateDatabase( DWORD dwDeltaTick )
             wJumpObject++;
         }
     }
-
 }
 
 BOOL TemplateMainServer::SendTo( WORD wKey, BYTE * pMsg, WORD wSize)
@@ -171,6 +170,45 @@ BOOL TemplateMainServer::SendTo( WORD wKey, BYTE * pMsg, WORD wSize)
 	return TRUE;
 }
 
+BOOL TemplateMainServer::SendToLogin( BYTE * pMsg, WORD wSize ) 
+{
+	if (m_pLoginSession) {
+		m_pLoginSession->Send( pMsg, wSize );
+	}
+	return TRUE;
+}
+
+BOOL TemplateMainServer::SendToAgent( BYTE * pMsg, WORD wSize ) 
+{
+	if (m_pAgentSession) {
+		m_pAgentSession->Send( pMsg, wSize );
+	}
+	return TRUE;
+}
+
+BOOL TemplateMainServer::SendToLobby( BYTE * pMsg, WORD wSize ) 
+{
+	if (m_pLobbySession) {
+		m_pLobbySession->Send( pMsg, wSize );
+	}
+	return TRUE;
+}
+
+BOOL TemplateMainServer::SendToGames( BYTE * pMsg, WORD wSize ) 
+{
+	if (m_pGameSession) {
+		m_pGameSession->Send( pMsg, wSize );
+	}
+	return TRUE;
+}
+
+BOOL TemplateMainServer::SendToDB( BYTE * pMsg, WORD wSize ) 
+{
+	if (m_pDBSession) {
+		m_pDBSession->Send( pMsg, wSize );
+	}
+	return TRUE;
+}
 
 /**************************************************************
 	服务器共享连接信息
@@ -192,7 +230,7 @@ DWORD TemplateMainServer::SetSession(TemplateServerSession * pSession) {
 	if ( TemplateMainServer::m_pSessionArray[wKey]!=NULL ) {
 		TemplateMainServer::FreeSession(wKey); //先释放
 	}
-	DEBUG_MSG( LVL_DEBUG, " SetSession(%d) ", wKey);
+	DEBUG_MSG( LVL_DEBUG, " SetSession(%d)", wKey);
 	TemplateMainServer::m_pSessionArray[wKey] = pSession;
 	TemplateMainServer::m_uiCountKey++;
 }
@@ -209,10 +247,10 @@ void TemplateMainServer::FreeSession(DWORD wIndex) {
 	创建服务器信息
 **************************************************************/
 NetworkObject * CreateServerSideAcceptedObject() {
-	DEBUG_MSG( LVL_DEBUG, "CreateServerSideAcceptedObject. \n" );
+	DEBUG_MSG( LVL_DEBUG, "CreateServerSideAcceptedObject." );
 	TemplateTempSession * obj = TemplateSessionFactory::Instance()->AllocTempSession();
 	if (obj==NULL) {
-        DEBUG_MSG( LVL_ERROR, "TemplateTempSession Fail . \n");
+        DEBUG_MSG( LVL_ERROR, "TemplateTempSession Fail.");
 		return NULL;
 	}
 	obj->Clear();
@@ -220,45 +258,45 @@ NetworkObject * CreateServerSideAcceptedObject() {
 }
 
 VOID DestroyServerSideAcceptedObject( NetworkObject *pObjs ) {
-	DEBUG_MSG( LVL_TRACE, "DestroyServerSideAcceptedObject. \n");
+	DEBUG_MSG( LVL_TRACE, "DestroyServerSideAcceptedObject.");
 	TemplateServerSession * pSession = (TemplateServerSession*)pObjs;
 	eSERVER_TYPE eType = pSession->GetServerType();
 	if ( eType==TEMP_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeTempSession(%x)", pObjs);
 		TemplateTempSession * obj = (TemplateTempSession*)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		TemplateSessionFactory::Instance()->FreeTempSession(obj);
 	}
 	else if ( eType==LOGIN_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeLoginSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeLoginSession(%x)", pObjs);
 		TemplateLoginSession * obj = (TemplateLoginSession*)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
-		obj->Release();
+		
 		TemplateSessionFactory::Instance()->FreeLoginSession(obj);
     }
 	else if ( eType==AGENT_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeAgentSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeAgentSession(%x)", pObjs);
 		TemplateAgentSession * obj = (TemplateAgentSession*)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		obj->Release();
 		TemplateSessionFactory::Instance()->FreeAgentSession(obj);
     }
 	else if ( eType==LOBBY_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeLobbySession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeLobbySession(%x)", pObjs);
 		TemplateLobbySession * obj = (TemplateLobbySession *)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		obj->Release();
 		TemplateSessionFactory::Instance()->FreeLobbySession(obj);
     }
 	else if ( eType==GAME_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeGameSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeGameSession(%x)", pObjs);
 		TemplateGameSession * obj = (TemplateGameSession *)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		obj->Release();
 		TemplateSessionFactory::Instance()->FreeGameSession(obj);
     }
 	else if ( eType==DB_SERVER ) {
-		DEBUG_MSG( LVL_TRACE, ">>>FreeDBSession( %x )\n", pObjs);
+		DEBUG_MSG( LVL_TRACE, ">>>FreeDBSession(%x)", pObjs);
 		TemplateDBSession * obj = (TemplateDBSession *)pObjs;
 		TemplateMainServer::FreeSession( obj->GetSessionIndex() );
 		obj->Release();
@@ -267,17 +305,17 @@ VOID DestroyServerSideAcceptedObject( NetworkObject *pObjs ) {
 }
 
 VOID DestroyServerSideConnectedObject( NetworkObject *pNetworkObject ) {
-     DEBUG_MSG( LVL_TRACE, "DestroyServerSideConnectedObject. \n");
+     DEBUG_MSG( LVL_TRACE, "DestroyServerSideConnectedObject.");
 }
 
 /**************************************************************
 	创建客户端信息
 **************************************************************/
 NetworkObject * CreateClientSideAcceptedObject() {
-    DEBUG_MSG( LVL_TRACE, "CreateClientSideAcceptedObject. \n");
+    DEBUG_MSG( LVL_TRACE, "CreateClientSideAcceptedObject.");
 	TemplateUserSession * pObj = TemplateSessionFactory::Instance()->AllocUserSession();
 	if ( pObj==NULL ) {
-		DEBUG_MSG( LVL_TRACE, "AllocUserSession Fail.\n");
+		DEBUG_MSG( LVL_TRACE, "AllocUserSession Fail.");
 		return NULL;
 	}
 	pObj->Init();
@@ -285,7 +323,7 @@ NetworkObject * CreateClientSideAcceptedObject() {
 }
 
 VOID DestroyClientSideAcceptedObject( NetworkObject * pObjs ) {
-    DEBUG_MSG( LVL_TRACE, "DestroyClientSideAcceptedObject. \n");
+    DEBUG_MSG( LVL_TRACE, "DestroyClientSideAcceptedObject.");
 	TemplateUserSession * pSession = (TemplateUserSession *)pObjs;
 	assert( pSession );
 	pSession->Release();
@@ -293,6 +331,6 @@ VOID DestroyClientSideAcceptedObject( NetworkObject * pObjs ) {
 }
 
 VOID DestroyClientSideConnectedObject( NetworkObject * pNetworkObject ) {
-	DEBUG_MSG( LVL_TRACE, "DestroyClientSideConnectedObject. \n");
+	DEBUG_MSG( LVL_TRACE, "DestroyClientSideConnectedObject.");
 }
 
