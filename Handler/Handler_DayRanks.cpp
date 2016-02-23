@@ -2,6 +2,7 @@
 #include "PacketRank.h"
 #include "AgentServer.h"
 #include "LobbyServer.h"
+#include "DBServer.h"
 
 /************************************************
     Query_DayRanks
@@ -102,6 +103,9 @@ void FromDBToDB_DayRanks_DBR(TemplateServerSession * pServerSession, MSG_BASE * 
                     packet->GetRank(i).uiRate = pQuery->vctRes[i].m_iRate ;
                 }
             }
+
+            packet->GetProtocol() = MAKEDWORD( (WORD)FromDBToLobby_PID, (WORD)DayRanks_ANC );
+            pServerSession->Send( (BYTE*)packet, sizeof(RankPacket) );
         }
     }
 }
@@ -111,7 +115,52 @@ void FromDBToDB_DayRanks_DBR(TemplateServerSession * pServerSession, MSG_BASE * 
 ************************************************/
 void FromDBToLobby_DayRanks_ANC(TemplateServerSession * pServerSession, MSG_BASE * pMsg, WORD wSize)
 {
+    if ( wSize<sizeof(RankPacket) ) {
+		return; // 发送的包数据不正确,丢失;
+	}
 
+	LobbyUpdate * pLobbyUpdate = g_pLobbyServer->GetLobbyUpdate();
+    if ( pLobbyUpdate )
+    {
+        pLobbyUpdate->GetDay().ToClear();
+        pLobbyUpdate->GetDay().SetPacket( (BYTE*)pMsg, sizeof(RankPacket) );
+        pLobbyUpdate->GetDay().ToPrint();
+
+        RankPacket packet = pLobbyUpdate->GetDay();
+        char * szBuff = packet.GetJsonData();
+
+        char szMainBuff[1024] = {0};
+        char szUintBuff[256] = {0};
+        sprintf( szUintBuff, "{\"protocol\":%d, \"ranking\":{", MAKEDWORD( (WORD)900, (WORD)642) );
+        strcat( szMainBuff, szUintBuff );
+
+        WORD wLen = packet.GetRankSize();
+        for(int i=0; i<wLen; ++i)
+        {
+            szUintBuff[0] = '\0';
+            int _idx  = packet.GetRank(i).byIndex;
+            char * _name = packet.GetRank(i).szName;
+            int _rate = packet.GetRank(i).uiRate;
+
+            if (i!=0) {
+               strcat( szMainBuff, ",");
+            }
+
+            sprintf( szUintBuff, "{\"rank\":%d,\"name\":%d,\"rate\":%d}",
+                   _idx, _name, _rate );
+            strcat( szMainBuff, szUintBuff );
+        }
+        if (wLen>0) {
+            strcat( szMainBuff, "}}" );
+        }
+
+        WORD wMainLen = strlen( szMainBuff );
+        DEBUG_MSG( LVL_DEBUG, "DayRanks = (%s, %d)", szMainBuff, wMainLen);
+        if ( wMainLen<512 ) {
+            memcpy( szBuff, szMainBuff , wMainLen);
+            packet.GetJsonSize() = wMainLen;
+        }
+    }
 }
 
 /************************************************
@@ -125,8 +174,9 @@ void FromLobbyToAgent_DayRanks_ANC(TemplateServerSession * pServerSession, MSG_B
         packet.SetPacket( (BYTE*)pMsg,wSize );
 
         WORD nLen = packet.GetJsonSize();
-        if ( nLen>0 ) {
-            packet.GetProtocol() = MAKEDWORD( (WORD)FromLobbyToAgent_PID, (WORD)WeekRanks_ANC );
+        if ( nLen>0 )
+        {
+            // packet.GetProtocol() = MAKEDWORD( (WORD)FromLobbyToAgent_PID, (WORD)WeekRanks_ANC );
             g_pAgentServer->SendTo( packet.GetUserKey(), (BYTE*)packet.GetJsonData(), nLen);
         }
     }

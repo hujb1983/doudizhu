@@ -30,6 +30,11 @@ void FieldsPacket::ToPrint()
 BYTE & FieldsPacket::GetFieldsSize()
 {   return m_pFieldsSize; }
 
-ST_Field & FieldsPacket::GetFields()
-{   return m_sFieldsData; }
+ST_Field & FieldsPacket::GetFields( BYTE byIndex )
+{   if ( byIndex<33 ) { return m_pFieldsData[byIndex]; }   }
 
+WORD & FieldsPacket::GetJsonSize()
+{   return m_wJsonSize; }
+
+CHAR * FieldsPacket::GetJsonData()
+{   return m_pJsonData; }

@@ -10,6 +10,9 @@ RankPacket::~RankPacket()
 
 void RankPacket::ToInit()   {   memset( this, 0x0, sizeof(this) );  }  // 清理
 
+void RankPacket::ToClear()
+{   memset( m_pJsonData, 0x0, sizeof(m_pJsonData) ); }
+
 void RankPacket::SetPacket ( BYTE * byData, WORD wSize ){
     memcpy( this, byData, wSize );
 }
@@ -24,7 +27,7 @@ WORD   RankPacket::GetPacketSize() {   // 取得这个包指针;
 
 void RankPacket::ToPrint()
 {
-    DEBUG_MSG( LVL_DEBUG, "| RankPacket(%s); |", m_pJsonData);
+    // DEBUG_MSG( LVL_DEBUG, "| RankPacket(%s); |", m_pJsonData);
 }
 
 BYTE & RankPacket::GetRankSize()
@@ -34,9 +37,7 @@ ST_Rank & RankPacket::GetRank(BYTE byIndex)
 {   if ( byIndex<10 ) { return m_sRankData[byIndex]; }   }
 
 WORD & RankPacket::GetJsonSize()
-{   return m_pJsonSize; }
+{   return m_wJsonSize; }
 
 CHAR * RankPacket::GetJsonData()
 {   return m_pJsonData; }
-
-

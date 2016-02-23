@@ -13,8 +13,8 @@ public:
 	static DWORD GetTickCount();
 	
 public:	
-	void Start();
-	virtual BOOL Update(UINT uiTicket = 0);
+	void StartTimer();
+	virtual BOOL UpdateTimer(UINT uiTicket = 0);
 	
 private:
 	UINT m_StartInterval;

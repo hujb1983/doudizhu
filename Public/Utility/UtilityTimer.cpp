@@ -24,12 +24,12 @@ DWORD UtilityTimer::GetTickCount()
 	return t - t0;
 }
 
-void UtilityTimer::Start()
+void UtilityTimer::StartTimer()
 {
 	m_StartInterval = UtilityTimer::GetTickCount();
 }
 	
-BOOL UtilityTimer::Update(UINT uiTicket)
+BOOL UtilityTimer::UpdateTimer(UINT uiTicket)
 {
 	if (uiTicket==0) {
 		uiTicket = UtilityTimer::GetTickCount();
@@ -37,8 +37,8 @@ BOOL UtilityTimer::Update(UINT uiTicket)
 	
 	UINT nowTimes = m_StartInterval + m_uiInterval;
 	if ( nowTimes < uiTicket) {
-		return FALSE;
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 	

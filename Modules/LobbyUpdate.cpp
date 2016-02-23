@@ -2,6 +2,7 @@
 #include "LobbyServer.h"
 
 LobbyUpdate::LobbyUpdate()
+: UtilityTimer(6000)
 {
     m_byFirst = TRUE;
 }
@@ -11,12 +12,18 @@ LobbyUpdate::~LobbyUpdate()
 
 }
 
-BOOL LobbyUpdate::Update( UINT uiTicket )
+BOOL LobbyUpdate::UpdateDate( UINT uiTicket )
 {
-
+    BYTE byRet = this->UpdateTimer( uiTicket );
+    if ( byRet==TRUE ) {
+        DEBUG_MSG( LVL_DEBUG, "UtilityTimer::Update(%d)", uiTicket );
+        this->StartTimer();
+        SendToDB();
+        Sleep(3000);
+    }
 }
 
-void LobbyUpdate::SendInit()
+void LobbyUpdate::SendToDB()
 {
     m_pDayRanks.GetProtocol() = MAKEDWORD( (WORD)FromLobbyToDB_PID, (WORD)DayRanks_SYN );
     g_pLobbyServer->SendToDB( (BYTE*)&m_pDayRanks, sizeof(RankPacket) );
@@ -31,9 +38,8 @@ RankPacket & LobbyUpdate::GetDay()
 RankPacket & LobbyUpdate::GetWeek()
 {   return m_pWeekRanks; }
 
-CHAR * LobbyUpdate::GetJsonDay()
-{   return m_pDayRanks.GetJsonData();  }
+FieldsPacket & LobbyUpdate::GetFields()
+{   return m_pFields;   }
 
-CHAR * LobbyUpdate::GetJsonWeek()
-{   return m_pWeekRanks.GetJsonData();  }
-
+RoomsPacket & LobbyUpdate::GetRooms( BYTE byIndex )
+{   return m_pRooms[byIndex]; }

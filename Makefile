@@ -10,12 +10,14 @@ base_INC = 	-I$(HOME)/Public/Include \
 			-I$(HOME)/Handler \
 			-I$(HOME)/Modules \
 			-I$(HOME)/Packet \
+			-I$(HOME)/Servers \
 			-I$(MYSQLINC)
-	  
+
 HomeObjects	=   $(HOME)/Public/Objects
 HomeHandler	=   $(HOME)/Handler
 HomeModules	=   $(HOME)/Modules
 HomePacket	=   $(HOME)/Packet
+HomeServers	=   $(HOME)/Servers
 
 LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/UtilityDrng.o \
@@ -60,31 +62,32 @@ LibarayObj  =   $(HomeObjects)/UtilityLogger.o \
 				$(HomeObjects)/TemplateCommand.o \
 				$(HomeObjects)/TemplatePacket.o \
 				$(HomeObjects)/TemplateSeasoning.o \
-				$(HomeObjects)/TemplateMainServer.o
-				
+				$(HomeObjects)/TemplateMainServer.o \
+
+ModulesObjs =   $(HomeModules)/LobbyUpdate.o \
+				$(HomeModules)/ServerExtern.o \
+				$(HomeModules)/PacketHandler.o
+
 PacketObjs	=   $(HomePacket)/PacketLogin.o \
 				$(HomePacket)/PacketUser.o \
 				$(HomePacket)/PacketFields.o \
 				$(HomePacket)/PacketRooms.o \
-				$(HomePacket)/PacketRank.o
-				
-HandlerObjs	=   $(HomeHandler)/ServerExtern.o \
-				$(HomeHandler)/PacketHandler.o \
-				$(HomeHandler)/Handler_PreLogin.o \
+				$(HomePacket)/PacketRank.o \
+
+HandlerObjs	=   $(HomeHandler)/Handler_PreLogin.o \
 				$(HomeHandler)/Handler_Login.o \
 				$(HomeHandler)/Handler_FieldsInfo.o \
 				$(HomeHandler)/Handler_RoomsInfo.o \
 				$(HomeHandler)/Handler_DayRanks.o \
 				$(HomeHandler)/Handler_WeekRanks.o
-				
-LoginObjs 	=   $(HomeModules)/LoginServer.o
-AgentObjs 	=   $(HomeModules)/AgentServer.o
-LobbyObjs 	=   $(HomeModules)/LobbyUpdate.o \
-				$(HomeModules)/LobbyServer.o
-GameObjs 	=   $(HomeModules)/GameServer.o
-DBObjs 		=   $(HomeModules)/DBServer.o
 
-BINDIR = Servers
+LoginObjs 	=   $(HomeServers)/LoginServer.o
+AgentObjs 	=   $(HomeServers)/AgentServer.o
+LobbyObjs 	=   $(HomeServers)/LobbyServer.o
+GameObjs 	=   $(HomeServers)/GameServer.o
+DBObjs 		=   $(HomeServers)/DBServer.o
+
+BINDIR = Bin
 
 all: CheckBin \
 	$(BINDIR)/LoginServer \
@@ -93,19 +96,19 @@ all: CheckBin \
 	$(BINDIR)/GameServer \
 	$(BINDIR)/DBServer
 	
-$(BINDIR)/LoginServer: $(PacketObjs) $(HandlerObjs) $(LoginObjs)
+$(BINDIR)/LoginServer: $(ModulesObjs) $(PacketObjs) $(HandlerObjs) $(LoginObjs)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 
-$(BINDIR)/AgentServer: $(PacketObjs) $(HandlerObjs) $(AgentObjs)
+$(BINDIR)/AgentServer: $(ModulesObjs) $(PacketObjs) $(HandlerObjs) $(AgentObjs)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 
-$(BINDIR)/LobbyServer: $(PacketObjs) $(HandlerObjs) $(LobbyObjs)
+$(BINDIR)/LobbyServer: $(ModulesObjs) $(PacketObjs) $(HandlerObjs) $(LobbyObjs)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 
-$(BINDIR)/GameServer: $(PacketObjs) $(HandlerObjs) $(GameObjs)
+$(BINDIR)/GameServer: $(ModulesObjs) $(PacketObjs) $(HandlerObjs) $(GameObjs)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 	
-$(BINDIR)/DBServer: $(PacketObjs) $(HandlerObjs) $(DBObjs)
+$(BINDIR)/DBServer: $(ModulesObjs) $(PacketObjs) $(HandlerObjs) $(DBObjs)
 	$(CC) -g $(MYSQLLIB) $^ $(LibarayObj) -o  $@ -pthread
 
 	
@@ -125,6 +128,8 @@ clean:
 	rm -f $(BINDIR)/LobbyServer
 	rm -f $(BINDIR)/GameServer
 	rm -f $(BINDIR)/DBServer
+	rm -f $(BINDIR)/core.*
 	rm -f $(HOME)/Handler/*.o
 	rm -f $(HOME)/Modules/*.o
 	rm -f $(HOME)/Packet/*.o
+	rm -f $(HOME)/Servers/*.o

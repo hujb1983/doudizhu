@@ -8,7 +8,7 @@
 struct ST_Field
 {
     BYTE byIndex;// 房间号
-    UINT uiRooms;// 房间数
+    UINT uiCount;// 房间数
     CHAR szName[33];// 名称
 };
 
@@ -26,13 +26,18 @@ public:
     BYTE * GetPacket(BYTE *, WORD); // 给一个指针并获得头指针;
     WORD   GetPacketSize(); // 取得这个包大小;
 
-public:
     BYTE & GetFieldsSize(); // 大小
-    ST_Field & GetFields(); // 排行版
+    ST_Field & GetFields(BYTE byIndex); // 排行版
+
+    WORD & GetJsonSize(); // 给一个指针并获得头指针;
+    CHAR * GetJsonData(); // 取得这个包大小;
 
 private:
     BYTE m_pFieldsSize; // 数据大小
-    ST_Field m_sFieldsData; // 排行版
+    ST_Field m_pFieldsData[5]; // 排行版
+
+    WORD m_wJsonSize; // 数据大小
+    CHAR m_pJsonData[512]; // 排行版
 };
 #pragma pack(pop)
 /*************************************/

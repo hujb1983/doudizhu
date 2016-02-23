@@ -1,7 +1,8 @@
-#ifndef _LobbyUpdate_H_
-#define _LobbyUpdate_H_
+#ifndef _LobbyUpdate1_H_
+#define _LobbyUpdate1_H_
 #include "PacketRank.h"
-#include "PacketHandler.h"
+#include "PacketFields.h"
+#include "PacketRooms.h"
 
 class LobbyUpdate : public UtilityTimer
 {
@@ -10,24 +11,25 @@ public:
 	~LobbyUpdate();
 
 public:
-    BOOL Update( UINT uiTicket );
-
-    void SendInit();
+    BOOL UpdateDate( UINT uiTicket );
+    void SendToDB();
 
     RankPacket & GetDay();
     RankPacket & GetWeek();
 
-    CHAR * GetJsonDay();
-    CHAR * GetJsonWeek();
+    FieldsPacket & GetFields();
+    RoomsPacket & GetRooms( BYTE byIndex );
 
 private:
     BYTE m_byFirst;
+
     RankPacket m_pDayRanks;
     RankPacket m_pWeekRanks;
 
+    FieldsPacket m_pFields;
+    RoomsPacket m_pRooms[5];
 };
 
-extern LobbyUpdate * g_pLobbyUpdate;
 
 #endif
 

@@ -50,31 +50,21 @@
 		<Unit filename="../Handler/Handler_QuitTable.cpp" />
 		<Unit filename="../Handler/Handler_Reminder.cpp" />
 		<Unit filename="../Handler/Handler_RoomsInfo.cpp" />
-		<Unit filename="../Handler/Handler_RoomsInfo.o" />
 		<Unit filename="../Handler/Handler_Settlement.cpp" />
 		<Unit filename="../Handler/Handler_StartGame.cpp" />
 		<Unit filename="../Handler/Handler_Trusteeship.cpp" />
 		<Unit filename="../Handler/Handler_WeekRanks.cpp" />
 		<Unit filename="../Handler/PacketHandler.cpp" />
-		<Unit filename="../Handler/PacketHandler.h" />
-		<Unit filename="../Handler/ProtocolGame.h" />
-		<Unit filename="../Handler/ProtocolLogin.h" />
-		<Unit filename="../Handler/ProtocolUpdate.h" />
 		<Unit filename="../Handler/ServerExtern.cpp" />
-		<Unit filename="../Modules/AgentServer.cpp" />
-		<Unit filename="../Modules/AgentServer.h" />
-		<Unit filename="../Modules/DBServer.cpp" />
-		<Unit filename="../Modules/DBServer.h" />
-		<Unit filename="../Modules/GameServer.cpp" />
-		<Unit filename="../Modules/GameServer.h" />
-		<Unit filename="../Modules/LobbyServer.cpp" />
-		<Unit filename="../Modules/LobbyServer.h" />
 		<Unit filename="../Modules/LobbyUpdate.cpp" />
 		<Unit filename="../Modules/LobbyUpdate.h" />
-		<Unit filename="../Modules/LoginServer.cpp" />
-		<Unit filename="../Modules/LoginServer.h" />
-		<Unit filename="../Modules/Master.cpp" />
-		<Unit filename="../Modules/Master.h" />
+		<Unit filename="../Modules/PacketHandler.cpp" />
+		<Unit filename="../Modules/PacketHandler.h" />
+		<Unit filename="../Modules/ProtocolGame.h" />
+		<Unit filename="../Modules/ProtocolLogin.h" />
+		<Unit filename="../Modules/ProtocolServerType.h" />
+		<Unit filename="../Modules/ProtocolUpdate.h" />
+		<Unit filename="../Modules/ServerExtern.cpp" />
 		<Unit filename="../Packet/PacketFields.cpp" />
 		<Unit filename="../Packet/PacketFields.h" />
 		<Unit filename="../Packet/PacketLogin.cpp" />
@@ -86,6 +76,18 @@
 		<Unit filename="../Packet/PacketTable.h" />
 		<Unit filename="../Packet/PacketUser.cpp" />
 		<Unit filename="../Packet/PacketUser.h" />
+		<Unit filename="../Servers/AgentServer.cpp" />
+		<Unit filename="../Servers/AgentServer.h" />
+		<Unit filename="../Servers/DBServer.cpp" />
+		<Unit filename="../Servers/DBServer.h" />
+		<Unit filename="../Servers/GameServer.cpp" />
+		<Unit filename="../Servers/GameServer.h" />
+		<Unit filename="../Servers/LobbyServer.cpp" />
+		<Unit filename="../Servers/LobbyServer.h" />
+		<Unit filename="../Servers/LoginServer.cpp" />
+		<Unit filename="../Servers/LoginServer.h" />
+		<Unit filename="../Servers/Master.cpp" />
+		<Unit filename="../Servers/Master.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

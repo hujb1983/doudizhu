@@ -18,14 +18,17 @@ void TemplateLobbySession::Clear()
 
 void TemplateLobbySession::OnRecv( BYTE *pMsg, WORD wSize )
 {
-    int pid = 0;
+	int pid = 0;
     if ( wSize>=sizeof(TemplatePacket) )
     {
         TemplatePacket * packet = (TemplatePacket *) pMsg;
         pid = packet->GetProtocol();
-        DEBUG_MSG( LVL_TRACE, "Lobby_PID:%d", pid);
+        DEBUG_MSG( LVL_TRACE, "DB_PID:%d", pid);
     }
-    TemplatePacketHandler::ParsePacket_Lobby( pid, this, (MSG_BASE*)pMsg, wSize );
+		
+	if (pid!=0) {
+		TemplatePacketHandler::ParsePacket_Lobby( pid, this, (MSG_BASE*)pMsg, wSize );
+	}
 }
 
 void TemplateLobbySession::OnConnect( BOOL bSuccess, DWORD dwNetworkIndex )

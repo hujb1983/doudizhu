@@ -7,12 +7,12 @@
 #pragma pack(push, 1)
 struct ST_Room
 {
-    UINT m_iRoomID;            // 房间ID
-    UINT m_uiTableID;          // 桌子ID
+    UINT m_uiFieldId;            // 房间ID
+    UINT m_uiRoomId;          // 桌子ID
     CHAR m_szName[33];         // 房间名称
-    BYTE m_iDoubles;           // 是否加倍
-    BYTE m_iLimitPS;           // 限制最高人数
-    BYTE m_iOnlines;           // 在线人数
+    BYTE m_byDoubles;           // 是否加倍
+    BYTE m_byLimitPS;           // 限制最高人数
+    BYTE m_byOnlines;           // 在线人数
     int  m_iMoney;             // 带入金额
 };
 
@@ -30,14 +30,21 @@ public:
     BYTE * GetPacket(BYTE *, WORD); // 给一个指针并获得头指针;
     WORD   GetPacketSize(); // 取得这个包大小;
 
-public:
+    BYTE & GetFieldId(); // 所属场次
     BYTE & GetRoomsSize(); // 大小
-    ST_Room & GetRooms(); // 排行版
+    ST_Room & GetRooms( BYTE index ); // 排行版
+
+    WORD & GetJsonSize(); // 给一个指针并获得头指针;
+    CHAR * GetJsonData(); // 取得这个包大小;
 
 private:
-    BYTE m_pRoomsSize; // 数据大小
-    ST_Room m_sRoomsData; // 排行版
+    BYTE m_byFieldId; // 场次ID
 
+    BYTE m_wRoomsSize; // 数据大小
+    ST_Room m_sRoomsData[32]; // 排行版
+
+    WORD m_wJsonSize; // 数据大小
+    CHAR m_pJsonData[512]; // 排行版
 };
 #pragma pack(pop)
 /*************************************/

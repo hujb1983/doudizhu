@@ -27,9 +27,18 @@ void RoomsPacket::ToPrint()
     //DEBUG_MSG( LVL_DEBUG, "| RoomsPacket(%s); |", m_pJsonData);
 }
 
+
+BYTE & RoomsPacket::GetFieldId()
+{   return m_byFieldId; }
+
 BYTE & RoomsPacket::GetRoomsSize()
-{   return m_pRoomsSize; }
+{   return m_wRoomsSize; }
 
-ST_Room & RoomsPacket::GetRooms()
-{   return m_sRoomsData; }
+ST_Room & RoomsPacket::GetRooms( BYTE byIndex )
+{   if ( byIndex<33 ) { return m_sRoomsData[byIndex]; }   }
 
+WORD & RoomsPacket::GetJsonSize()
+{   return m_wJsonSize; }
+
+CHAR * RoomsPacket::GetJsonData()
+{   return m_pJsonData; }

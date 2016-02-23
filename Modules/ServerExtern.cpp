@@ -9,3 +9,4 @@ AgentServer * g_pAgentServer = NULL;
 LobbyServer * g_pLobbyServer = NULL;
 GameServer * g_pGameServer = NULL;
 DBServer * g_pDBServer = NULL;
+LobbyUpdate * g_pLobbyUpdate = NULL;
