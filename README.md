@@ -9,7 +9,8 @@
   
 架构层(Template)：<br>
 1. 服务品层分为：LoginServer、DBServer、LobbyServer、AgentServer、GameServer等五组服务器； <br>
-2. 数据包模型：RankPacket(排行包)、RoomsPacket(场次包)、RoomsPacket(房间包)、UserPacket(用户数据)、TablePacket(桌面信息包)等； <br>
+2. 数据包模型：RankPacket(排行包)、RoomsPacket(场次包)、RoomsPacket(房间包)、
+   UserPacket(用户数据)、TablePacket(桌面信息包)等； <br>
 3. 控制器由 PacketHandler里来定义：主要包括Protocol(协议)和FromAgentToGame(处理函数类); <br>
 4. a线.LoginServer+DBServer=为预登录服务器组； <br>
   b线.AgentServer(N)+LobbyServer+DBServer=为登陆认证和大厅数据加载服务器组； <br>
