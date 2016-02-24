@@ -7,7 +7,7 @@
 4. 应用层主要是实现三个要求(MVC模型要求)：数据模型区(Pakcet)、数据控制区(Handler) 、服务器模块(Module)；  <br><br>
 
   
-架构层(Template)：<br><br>
+<br>架构层(Template)：<br><br>
 1. 服务品层分为：LoginServer、DBServer、LobbyServer、AgentServer、GameServer等五组服务器； <br><br>
 2. 数据包模型：RankPacket(排行包)、RoomsPacket(场次包)、RoomsPacket(房间包)、UserPacket(用户数据)、TablePacket(桌面信息包)等； <br><br>
 3. 控制器由 PacketHandler里来定义：主要包括Protocol(协议)和FromAgentToGame(处理函数类); <br><br>
